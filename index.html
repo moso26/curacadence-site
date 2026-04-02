@@ -61,14 +61,21 @@
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 80px;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
       gap: 64px;
-      padding: 120px 80px 80px;
-      background: var(--black);
-      position: relative;
-      overflow: hidden;
+      width: 100%;
+      padding-top: 80px;
     }
 
     .hero-text {
@@ -366,7 +373,8 @@
     @media (max-width: 900px) {
       nav { padding: 20px 24px; }
       section { padding: 80px 24px; }
-      .hero { grid-template-columns: 1fr; gap: 48px; padding: 100px 24px 80px; }
+      .hero { padding: 0 24px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; padding-top: 100px; padding-bottom: 60px; }
       .hero-visual { opacity: 0.6; }
       .hero-visual svg { width: 100%; max-width: 100%; }
       .about { grid-template-columns: 1fr; gap: 40px; }
@@ -392,6 +400,7 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-inner">
   <div class="hero-text">
     <p class="hero-eyebrow">Custom Software Studio</p>
     <h1 class="hero-headline">
@@ -410,7 +419,7 @@
     </a>
   </div>
   <div class="hero-visual">
-    <svg width="480" height="380" viewBox="0 0 480 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="480" height="380" viewBox="0 0 480 380" fill="none" xmlns="http://www.w3.org/2000/svg" overflow="visible">
       <!-- Main card -->
       <rect x="40" y="30" width="300" height="200" rx="10" stroke="#5cb8a0" stroke-width="1" stroke-opacity="0.4"/>
       <!-- Card header bar -->
@@ -456,6 +465,7 @@
       <rect x="330" y="21" width="52" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.3"/>
       <rect x="330" y="30" width="36" height="5" rx="2" fill="#5cb8a0" fill-opacity="0.15"/>
     </svg>
+  </div>
   </div>
 </section>
 
