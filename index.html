@@ -221,15 +221,80 @@
       content: '';
       position: absolute;
       top: -200px; right: -200px;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(92,184,160,0.07) 0%, transparent 70%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(92,184,160,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
-    .hero-content {
+    .hero-inner {
       position: relative;
       z-index: 1;
-      max-width: 680px;
+      max-width: var(--content-max);
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 80px;
       padding-top: 60px;
+    }
+    .hero-content {
+      max-width: 580px;
+      flex-shrink: 0;
+    }
+    .hero-visual {
+      flex: 0 0 300px;
+    }
+    .hero-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+    .hero-card-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .hero-card-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    .hero-card-modules {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-card-module {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+    }
+    .hero-card-module:last-child { border-bottom: none; }
+    .hero-card-module svg {
+      width: 14px;
+      height: 14px;
+      color: var(--teal);
+      flex-shrink: 0;
+    }
+    .hero-card-wave {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      opacity: 0.5;
     }
     .hero h1 {
       font-size: clamp(52px, 7vw, 88px);
@@ -243,7 +308,7 @@
     .hero-subhead {
       font-family: var(--font-body);
       font-size: 18px;
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.7;
       color: rgba(255,255,255,0.55);
       max-width: 520px;
@@ -548,7 +613,7 @@
     }
     .proof-stat-number {
       font-family: var(--font-display);
-      font-size: clamp(48px, 5vw, 64px);
+      font-size: clamp(64px, 6vw, 80px);
       font-weight: 300;
       color: var(--navy);
       line-height: 1;
@@ -607,8 +672,35 @@
       font-size: clamp(36px, 4vw, 52px);
       color: var(--navy);
       margin-top: 16px;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     }
+    .together-subhead {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--navy);
+      opacity: 0.65;
+      margin-bottom: 36px;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+    .together-pricing {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 16px;
+      letter-spacing: 0.01em;
+    }
+    .together-email {
+      display: block;
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--teal-dark);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .together-email:hover { color: var(--teal); }
     .together-cta {
       display: inline-flex;
       align-items: center;
@@ -709,6 +801,9 @@
       nav { padding: 0 24px; }
       .nav-links { display: none; }
       .hero { padding: 0 24px; }
+      .hero-inner { flex-direction: column; gap: 48px; padding-top: 80px; padding-bottom: 40px; align-items: flex-start; }
+      .hero-content { max-width: 100%; }
+      .hero-visual { display: none; }
       .hero h1 { font-size: 48px; }
       .problem-inner,
       .security-inner,
@@ -735,7 +830,7 @@
       .hero-subhead { font-size: 16px; }
       .modules-grid { grid-template-columns: 1fr; }
       .how-step-number { font-size: 80px; }
-      .proof-stat-number { font-size: 44px; }
+      .proof-stat-number { font-size: 56px; }
     }
   </style>
 </head>
@@ -759,22 +854,84 @@
 
 <!-- HERO -->
 <section class="hero" data-bg="#0a0a0a">
-  <div class="hero-content">
-    <span class="eyebrow">Clinical Operating System</span>
-    <h1>
-      Your clinical system,<br>
-      finally <span class="accent">in software.</span>
-    </h1>
-    <p class="hero-subhead">
-      CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared with anyone else.
-    </p>
-    <a href="mailto:carlos@curacadence.com" class="hero-cta">
-      Tell me about your practice
-      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="eyebrow">Clinical Operating System</span>
+      <h1>
+        Your clinical system,<br>
+        finally <span class="accent">in software.</span>
+      </h1>
+      <p class="hero-subhead">
+        CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared with anyone else.
+      </p>
+      <a href="mailto:carlos@curacadence.com" class="hero-cta">
+        Tell me about your practice
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-card">
+        <div class="hero-card-status">
+          <span class="hero-card-status-dot"></span>
+          Live deployment · New Lenox, IL
+        </div>
+        <div class="hero-card-modules">
+          <div class="hero-card-module">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Intake &amp; Assessment
+          </div>
+          <div class="hero-card-module">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Diagnosis Flow
+          </div>
+          <div class="hero-card-module">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Care Plan Builder
+          </div>
+          <div class="hero-card-module">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Session Logging
+          </div>
+          <div class="hero-card-module">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Progress Dashboard
+          </div>
+          <div class="hero-card-module">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Session Recap Email
+          </div>
+        </div>
+        <div class="hero-card-wave">
+          <svg viewBox="0 0 252 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline
+              points="0,18 28,18 42,18 56,4 70,32 84,4 98,32 112,18 126,18 196,18 210,10 224,26 238,18 252,18"
+              stroke="#5cb8a0"
+              stroke-width="1.5"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              opacity="0.6"/>
+          </svg>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="hero-scroll" aria-hidden="true">
     <span class="hero-scroll-line"></span>
     Scroll
@@ -784,6 +941,9 @@
 
 <!-- THE PROBLEM -->
 <section class="problem" data-bg="#ffffff">
+  <div class="problem-eyebrow reveal" style="max-width: var(--content-max); margin: 0 auto 48px;">
+    <span class="eyebrow" style="color: var(--text-muted);">The problem</span>
+  </div>
   <div class="problem-inner">
     <div class="problem-body reveal">
       <p>
@@ -1010,7 +1170,7 @@
         </div>
       </div>
       <p class="proof-description">
-        CadenceOS is live at a strength and rehabilitation clinic in New Lenox, Illinois. Powering patient intake through discharge for a practitioner with 9 regional assessment protocols and 229 tagged exercises across three care phases.
+        CadenceOS is live at Rebuilt Strength + Rehab in New Lenox, Illinois. Powering patient intake through discharge with 9 regional assessment protocols and 229 tagged exercises across three care phases.
       </p>
       <div class="proof-live">
         <span class="proof-live-dot"></span>
@@ -1027,35 +1187,32 @@
     <div class="together-left reveal">
       <span class="eyebrow">Working Together</span>
       <h2>You built your system. We build the software for it.</h2>
+      <p class="together-subhead">This is not a subscription you activate.<br>It starts with a conversation.</p>
       <a href="mailto:carlos@curacadence.com" class="together-cta">
         Tell me about your practice
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
+      <p class="together-pricing">Custom build · Monthly retainer. Scoped per practice.</p>
+      <a href="mailto:carlos@curacadence.com" class="together-email">carlos@curacadence.com</a>
     </div>
     <div class="together-right reveal">
       <p>
         Every practitioner who has spent years developing a clinical methodology reaches the same dead end. The tools that exist were designed for someone else. You adapt, you work around, you keep your actual logic somewhere the software can't touch. That is the problem CadenceOS was built to solve.
       </p>
       <p>
-        This is not a subscription you activate. It starts with a conversation. We learn your system: your assessment logic, your diagnosis structure, your decision framework, your care plan progressions, your clinical protocols. Everything that currently lives in your head or a document no one else understands. We capture all of it.
+        We learn your system: your assessment logic, your diagnosis structure, your decision framework, your care plan progressions, your clinical protocols. Everything that currently lives in your head or a document no one else understands. We capture all of it.
       </p>
       <p>
-        Then we build your instance. Your own deployment, your own database, your own subdomain. Your protocols are loaded as your IP, not shared with anyone else, not accessible to any other practice. When you open CadenceOS, you are not browsing a generic tool. You are running your clinical system as software, exactly the way you built it.
+        Then we build your instance. Your own deployment, your own database, your own subdomain. Your protocols are loaded as your IP — not shared with anyone else, not accessible to any other practice. When you open CadenceOS, you are not browsing a generic tool. You are running your clinical system as software, exactly the way you built it.
       </p>
       <p>
-        We work with a small number of practitioners at a time. This is not a product you self-onboard. It is a build scoped to your methodology, your specialty, your practice. After launch, a retainer covers hosting, security, monitoring, and support. You stay in the product as your system evolves.
+        We work with a small number of practitioners at a time. This is a build scoped to your methodology, your specialty, your practice. After launch, a retainer covers hosting, security, monitoring, and ongoing support as your system evolves.
       </p>
       <p class="closing">
         If you have spent years building a clinical framework that no software has ever been able to hold, let's talk.
       </p>
-      <a href="mailto:carlos@curacadence.com" class="together-cta" style="margin-top: 32px;">
-        Tell me about your practice
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
     </div>
   </div>
 </section>

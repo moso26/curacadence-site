@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   bgSections.forEach(s => bgObserver.observe(s));
 
   // 3. Scroll reveal — fade up
+  // Fix: immediately reveal any element already visible on load
+  // (covers direct anchor-link arrivals where IntersectionObserver never fires)
   const revealEls = document.querySelectorAll('.reveal');
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -27,15 +29,35 @@ document.addEventListener('DOMContentLoaded', () => {
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => revealObserver.observe(el));
+  }, { threshold: 0.08 });
 
-  // 4. Smooth anchor scrolling
+  revealEls.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      // Already in viewport — reveal immediately, no observer needed
+      el.classList.add('revealed');
+    } else {
+      revealObserver.observe(el);
+    }
+  });
+
+  // 4. Smooth anchor scrolling — after scroll, re-check reveals for newly-visible elements
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
       const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // After scroll animation (~700ms), reveal any elements now in view
+      setTimeout(() => {
+        document.querySelectorAll('.reveal:not(.revealed)').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('revealed');
+            revealObserver.unobserve(el);
+          }
+        });
+      }, 750);
     });
   });
 
