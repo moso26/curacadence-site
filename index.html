@@ -181,23 +181,18 @@
 
     .nav-cta {
       font-family: var(--font-body);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      padding: 9px 20px;
+      padding: 10px 22px;
       border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.3);
+      border: none;
       color: var(--white);
       text-decoration: none;
-      transition: all 0.3s ease;
-      background: transparent;
+      transition: background 0.25s ease, transform 0.2s ease;
+      background: var(--teal);
       letter-spacing: 0.02em;
     }
-    nav.scrolled .nav-cta { border-color: var(--navy); color: var(--navy); }
-    .nav-cta:hover {
-      background: var(--teal);
-      border-color: var(--teal);
-      color: var(--white);
-    }
+    .nav-cta:hover { background: var(--teal-dark); transform: translateX(2px); }
 
     /* ── HERO ── */
     .hero {
@@ -247,7 +242,7 @@
     .hero-card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 28px 24px;
     }
     .hero-card-status {
@@ -333,6 +328,13 @@
     .hero-cta:hover { background: var(--teal-dark); transform: translateX(3px); }
     .hero-cta svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
     .hero-cta:hover svg { transform: translateX(3px); }
+    .hero-response {
+      margin-top: 14px;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.28);
+      letter-spacing: 0.02em;
+    }
 
     .hero-scroll {
       position: absolute;
@@ -373,6 +375,17 @@
       color: var(--text);
     }
     .problem-body p + p { margin-top: 28px; }
+    .problem-body p:first-child::first-letter {
+      font-family: var(--font-display);
+      font-size: 5em;
+      font-weight: 600;
+      color: var(--navy);
+      float: left;
+      line-height: 0.82;
+      margin-right: 10px;
+      margin-top: 6px;
+      opacity: 0.18;
+    }
     .problem-pullquote {
       position: sticky;
       top: 120px;
@@ -685,11 +698,15 @@
       letter-spacing: -0.01em;
     }
     .together-pricing {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--text-muted);
-      margin-top: 16px;
-      letter-spacing: 0.01em;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e8e8e6;
+      opacity: 0.7;
     }
     .together-email {
       display: block;
@@ -701,6 +718,14 @@
       transition: color 0.2s ease;
     }
     .together-email:hover { color: var(--teal); }
+    .together-response {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 14px;
+      letter-spacing: 0.02em;
+      opacity: 0.7;
+    }
     .together-cta {
       display: inline-flex;
       align-items: center;
@@ -870,6 +895,7 @@
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
+      <p class="hero-response">We respond within 24 hours. No sales calls.</p>
     </div>
 
     <div class="hero-visual" aria-hidden="true">
@@ -1194,6 +1220,7 @@
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
+      <p class="together-response">We respond within 24 hours. No sales calls.</p>
       <p class="together-pricing">Custom build · Monthly retainer. Scoped per practice.</p>
       <a href="mailto:carlos@curacadence.com" class="together-email">carlos@curacadence.com</a>
     </div>
