@@ -1,0 +1,15 @@
+<svg width="400" height="160" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="160" fill="#1a3d6b"/>
+  <text
+    x="200"
+    y="120"
+    font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font-size="52"
+    font-weight="200"
+    fill="white"
+    letter-spacing="20"
+    text-anchor="middle"
+    dominant-baseline="auto">CURA</text>
+  <!-- Optical center: letter-spacing trailing compensation = -10px from text-anchor -->
+  <circle cx="190" cy="34" r="5.5" fill="#5cb8a0"/>
+</svg>

@@ -3,385 +3,739 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CURA builds custom software products for businesses that have outgrown generic tools. Based in the US, working with clients nationwide.">
-  <title>CURA: Custom Software for the Way You Work</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+  <!-- SEO -->
+  <title>CadenceOS — Clinical Software Built Around Your Protocols</title>
+  <meta name="description" content="CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://curacadence.com/">
+  <meta property="og:title" content="CadenceOS — Clinical Software Built Around Your Protocols">
+  <meta property="og:description" content="CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared.">
+  <meta property="og:site_name" content="CadenceOS">
+  <meta property="og:image" content="https://curacadence.com/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://curacadence.com/og-image.svg">
+  <meta name="twitter:title" content="CadenceOS — Clinical Software Built Around Your Protocols">
+  <meta name="twitter:description" content="CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared.">
+
+  <!-- Security: CSP -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'none'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; frame-ancestors 'none';">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/cadenceos-icon.svg">
+
+  <!-- Fonts: Poppins + Lato -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── TOKENS ── */
     :root {
-      --navy:   #1a3d6b;
-      --teal:   #5cb8a0;
-      --black:  #0d0d0d;
-      --white:  #ffffff;
-      --gray:   #f5f5f5;
-      --muted:  #888;
-      --text:   #1a1a1a;
+      --black:       #0a0a0a;
+      --navy:        #1a3d6b;
+      --navy-mid:    #1e4a7c;
+      --teal:        #5cb8a0;
+      --teal-dark:   #2a7a68;
+      --gray-dark:   #f0f0ee;
+      --gray:        #f5f5f3;
+      --white:       #ffffff;
+      --text:        #1a1a1a;
+      --text-muted:  #666666;
+
+      --font-display: 'Poppins', system-ui, sans-serif;
+      --font-body:    'Lato', system-ui, sans-serif;
+
+      --section-gap-xl: 160px;
+      --section-gap-lg: 120px;
+      --section-gap-md: 80px;
+      --content-max:    1100px;
+      --reading-max:    680px;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.75;
       color: var(--text);
       background: var(--white);
       -webkit-font-smoothing: antialiased;
     }
+
+    h1, h2 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.33, 0, 0, 1),
+                  transform 0.7s cubic-bezier(0.33, 0, 0, 1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .reveal:nth-child(4) { transition-delay: 0.15s; }
+    .reveal:nth-child(5) { transition-delay: 0.25s; }
+    .reveal:nth-child(6) { transition-delay: 0.35s; }
 
     /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
+      padding: 0 40px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 48px;
+      background: transparent;
+      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    nav.scrolled {
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.08);
     }
 
-    .nav-logo svg { display: block; }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      flex-shrink: 0;
+      display: block;
+    }
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      transition: color 0.4s ease;
+    }
+    nav.scrolled .nav-logo-text { color: var(--navy); }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    nav.scrolled .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover,
+    nav.scrolled .nav-links a:hover { color: var(--teal); }
 
     .nav-cta {
+      font-family: var(--font-body);
       font-size: 13px;
-      font-weight: 500;
-      color: var(--navy);
-      text-decoration: none;
-      border: 1.5px solid var(--navy);
-      border-radius: 6px;
+      font-weight: 700;
       padding: 9px 20px;
-      transition: background 0.2s, color 0.2s;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--white);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background: transparent;
+      letter-spacing: 0.02em;
     }
-    .nav-cta:hover { background: var(--navy); color: white; }
+    nav.scrolled .nav-cta { border-color: var(--navy); color: var(--navy); }
+    .nav-cta:hover {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: var(--white);
+    }
 
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
+      padding: 0 40px;
       display: flex;
       align-items: center;
-      padding: 0 48px;
       background: var(--black);
       position: relative;
+      overflow: hidden;
     }
-
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 64px;
-      width: 100%;
-      padding-top: 80px;
-      padding-bottom: 80px;
-    }
-
-    .hero-text {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .hero-visual {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.85;
-      width: 100%;
-    }
-
-    /* subtle teal glow background */
     .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.3;
+    }
+    .hero::after {
       content: '';
       position: absolute;
       top: -200px; right: -200px;
       width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(92,184,160,0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(92,184,160,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    .hero-eyebrow {
-      font-size: 11px;
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      padding-top: 60px;
+    }
+    .hero h1 {
+      font-size: clamp(52px, 7vw, 88px);
       font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 32px;
-    }
-
-    .hero-headline {
-      font-size: clamp(32px, 4vw, 68px);
-      font-weight: 200;
-      line-height: 1.1;
       color: var(--white);
-      max-width: 100%;
-      margin-bottom: 32px;
-      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
     }
-
-    .hero-headline em {
-      font-style: normal;
-      color: var(--teal);
-    }
-
-    .hero-sub {
-      font-size: 17px;
+    .hero h1 .accent { color: var(--teal); }
+    .hero-subhead {
+      font-family: var(--font-body);
+      font-size: 18px;
       font-weight: 300;
-      color: rgba(255,255,255,0.5);
-      max-width: 100%;
       line-height: 1.7;
-      margin-bottom: 56px;
+      color: rgba(255,255,255,0.55);
+      max-width: 520px;
+      margin-bottom: 48px;
     }
-
     .hero-cta {
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      font-family: var(--font-body);
       font-size: 14px;
-      font-weight: 500;
-      color: var(--black);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 14px 28px;
       background: var(--teal);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
       text-decoration: none;
-      border-radius: 8px;
-      padding: 16px 32px;
-      transition: opacity 0.2s;
-      width: fit-content;
+      transition: background 0.25s ease, transform 0.2s ease;
     }
-    .hero-cta:hover { opacity: 0.88; }
+    .hero-cta:hover { background: var(--teal-dark); transform: translateX(3px); }
+    .hero-cta svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+    .hero-cta:hover svg { transform: translateX(3px); }
 
-    /* ── SECTION BASE ── */
-    section { padding: 120px 48px; }
-
-    .section-label {
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
       font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 20px;
+      color: rgba(255,255,255,0.3);
+    }
+    .hero-scroll-line {
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
     }
 
-    /* ── ABOUT ── */
-    .about {
+    /* ── PROBLEM ── */
+    .problem {
       background: var(--white);
+      padding: var(--section-gap-xl) 40px;
+    }
+    .problem-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 80px;
-      align-items: center;
+      align-items: start;
     }
-
-    .about-headline {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 300;
-      line-height: 1.25;
-      color: var(--navy);
-      letter-spacing: -0.01em;
-    }
-
-    .about-body {
-      font-size: 16px;
-      font-weight: 300;
+    .problem-body {
+      font-family: var(--font-body);
+      font-size: 18px;
       line-height: 1.8;
-      color: #555;
+      color: var(--text);
     }
-
-    .about-body p + p { margin-top: 20px; }
-
-    /* ── WHAT WE BUILD ── */
-    .what {
-      background: var(--gray);
+    .problem-body p + p { margin-top: 28px; }
+    .problem-pullquote {
+      position: sticky;
+      top: 120px;
+      padding-left: 28px;
+      border-left: 2px solid var(--teal);
     }
-
-    .what-headline {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 300;
+    .problem-pullquote p {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.5vw, 30px);
+      font-weight: 400;
+      line-height: 1.4;
       color: var(--navy);
-      margin-bottom: 64px;
-      max-width: 600px;
-      letter-spacing: -0.01em;
-    }
-
-    .pillars {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-    }
-
-    .pillar {
-      background: white;
-      border-radius: 16px;
-      padding: 40px 36px;
-      border: 1px solid rgba(0,0,0,0.06);
-    }
-
-    .pillar-icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 24px;
-    }
-
-    .pillar-title {
-      font-size: 17px;
-      font-weight: 500;
-      color: var(--navy);
-      margin-bottom: 12px;
-    }
-
-    .pillar-body {
-      font-size: 14px;
-      font-weight: 300;
-      color: #666;
-      line-height: 1.7;
-    }
-
-    /* ── WORK ── */
-    .work {
-      background: var(--navy);
-    }
-
-    .work-headline {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 300;
-      color: white;
-      margin-bottom: 64px;
-      letter-spacing: -0.01em;
-    }
-
-    .work-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 52px;
-      max-width: 680px;
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-    }
-
-    .work-card-icon {
-      flex-shrink: 0;
-      width: 56px;
-      height: 56px;
-      background: rgba(92,184,160,0.12);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .work-card-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 12px;
-    }
-
-    .work-card-title {
-      font-size: 24px;
-      font-weight: 300;
-      color: white;
-      margin-bottom: 16px;
-      letter-spacing: -0.01em;
-    }
-
-    .work-card-body {
-      font-size: 15px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.7;
-    }
-
-    .work-card-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 24px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--teal);
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--teal);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    /* ── CONTACT ── */
-    .contact {
-      background: var(--white);
-      text-align: center;
-    }
-
-    .contact-headline {
-      font-size: clamp(28px, 4vw, 48px);
-      font-weight: 200;
-      color: var(--navy);
-      margin-bottom: 20px;
       letter-spacing: -0.02em;
     }
-
-    .contact-sub {
-      font-size: 16px;
-      font-weight: 300;
-      color: #777;
-      max-width: 480px;
-      margin: 0 auto 48px;
-      line-height: 1.7;
+    .problem-pullquote .italic {
+      font-style: italic;
+      color: var(--teal-dark);
     }
 
-    .contact-btn {
+    /* ── HOW IT WORKS ── */
+    .how {
+      background: var(--gray);
+      padding: var(--section-gap-xl) 40px;
+    }
+    .how-header {
+      max-width: var(--content-max);
+      margin: 0 auto 80px;
+    }
+    .how-header h2 {
+      font-size: clamp(40px, 5vw, 60px);
+      color: var(--navy);
+      margin-top: 16px;
+    }
+    .how-steps {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .how-step {
+      background: var(--white);
+      padding: 48px 40px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .how-step:first-child { border-radius: 12px 0 0 12px; }
+    .how-step:last-child  { border-radius: 0 12px 12px 0; }
+    .how-step-number {
+      position: absolute;
+      top: -16px;
+      right: 24px;
+      font-family: var(--font-display);
+      font-size: 120px;
+      font-weight: 700;
+      color: rgba(26,61,107,0.05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.04em;
+    }
+    .how-step-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: block;
+      margin-bottom: 20px;
+    }
+    .how-step h3 {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .how-step p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    /* ── MODULES ── */
+    .modules {
+      background: var(--white);
+      padding: var(--section-gap-xl) 40px;
+    }
+    .modules-header {
+      max-width: var(--content-max);
+      margin: 0 auto 72px;
+    }
+    .modules-header h2 {
+      font-size: clamp(36px, 4.5vw, 56px);
+      color: var(--navy);
+      max-width: 560px;
+      margin-top: 16px;
+    }
+    .modules-grid {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .module-card {
+      background: var(--white);
+      border: 1px solid #e8e8e6;
+      border-radius: 12px;
+      padding: 32px 28px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+    .module-card:hover {
+      border-color: var(--teal);
+      transform: translateY(-2px);
+    }
+    .module-card:first-child {
+      grid-row: span 2;
+      background: var(--navy);
+      border-color: var(--navy);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 36px;
+    }
+    .module-card:first-child:hover { transform: none; }
+    .module-card:first-child h3 { color: var(--white); font-size: 22px; }
+    .module-card:first-child p  { color: rgba(255,255,255,0.6); font-size: 15px; }
+    .module-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+    .module-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .module-card p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+
+    /* ── SECURITY ── */
+    .security {
+      background: var(--navy);
+      padding: var(--section-gap-xl) 40px;
+    }
+    .security-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .security .eyebrow { color: rgba(92,184,160,0.9); }
+    .security h2 {
+      font-size: clamp(36px, 4.5vw, 56px);
+      color: var(--white);
+      margin-top: 16px;
+      margin-bottom: 28px;
+    }
+    .security-body {
+      font-size: 17px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.6);
+    }
+    .security-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .security-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--teal);
+      border-radius: 12px;
+      padding: 28px 24px;
+      transition: background 0.25s ease;
+    }
+    .security-card:hover { background: rgba(255,255,255,0.08); }
+    .security-card-icon {
+      color: var(--teal);
+      width: 28px;
+      height: 28px;
+      margin-bottom: 16px;
+    }
+    .security-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .security-card p {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ── PROOF ── */
+    .proof {
+      background: var(--gray);
+      padding: var(--section-gap-xl) 40px;
+    }
+    .proof-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+    .proof-inner h2 {
+      font-size: clamp(40px, 5vw, 60px);
+      color: var(--navy);
+      margin-top: 16px;
+      margin-bottom: 56px;
+    }
+    .proof-card {
+      background: var(--white);
+      border: 1px solid #e8e8e6;
+      border-radius: 16px;
+      padding: 56px;
+      max-width: 740px;
+    }
+    .proof-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid #e8e8e6;
+    }
+    .proof-stat + .proof-stat {
+      padding-left: 40px;
+      border-left: 1px solid #e8e8e6;
+    }
+    .proof-stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 5vw, 64px);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -0.04em;
+    }
+    .proof-stat-label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .proof-description {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .proof-live {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal-dark);
+    }
+    .proof-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(92,184,160,0.4); }
+      50%       { box-shadow: 0 0 0 6px rgba(92,184,160,0); }
+    }
+
+    /* ── TOGETHER ── */
+    .together {
+      background: var(--white);
+      padding: var(--section-gap-xl) 40px;
+    }
+    .together-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: start;
+    }
+    .together-left h2 {
+      font-size: clamp(36px, 4vw, 52px);
+      color: var(--navy);
+      margin-top: 16px;
+      margin-bottom: 40px;
+    }
+    .together-cta {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      color: white;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 16px 32px;
       background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
       text-decoration: none;
-      border-radius: 8px;
-      padding: 18px 40px;
-      transition: opacity 0.2s;
+      transition: background 0.25s ease, transform 0.2s ease;
     }
-    .contact-btn:hover { opacity: 0.85; }
+    .together-cta:hover { background: var(--navy-mid); transform: translateX(3px); }
+    .together-cta svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+    .together-cta:hover svg { transform: translateX(3px); }
+    .together-right { padding-top: 8px; }
+    .together-right p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .together-right p:last-child { margin-bottom: 0; }
+    .together-right p.closing {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--navy);
+      font-style: italic;
+      padding-top: 24px;
+      border-top: 1px solid #e8e8e6;
+    }
 
     /* ── FOOTER ── */
     footer {
       background: var(--black);
-      padding: 40px 48px;
+      padding: 64px 40px;
+    }
+    .footer-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: start;
+    }
+    .footer-brand {
       display: flex;
       align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .footer-meta {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.9;
+    }
+    .footer-meta a {
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-meta a:hover { color: var(--teal); }
+    .footer-tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.25);
+      max-width: 280px;
+      text-align: right;
+      line-height: 1.7;
+    }
+    .footer-bottom {
+      max-width: var(--content-max);
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex;
       justify-content: space-between;
-    }
-
-    .footer-right {
       font-size: 12px;
-      font-weight: 300;
-      color: #444;
+      color: rgba(255,255,255,0.2);
     }
 
-    /* ── RESPONSIVE ── */
+    /* ── RESPONSIVE: 900px ── */
     @media (max-width: 900px) {
-      nav { padding: 20px 24px; }
-      section { padding: 80px 24px; }
+      :root {
+        --section-gap-xl: 100px;
+        --section-gap-lg: 80px;
+      }
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
       .hero { padding: 0 24px; }
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; padding-top: 100px; padding-bottom: 60px; }
-      .hero-visual { opacity: 0.6; }
-      .hero-visual svg { width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto; }
-      .about { grid-template-columns: 1fr; gap: 40px; }
-      .pillars { grid-template-columns: 1fr; }
-      .work-card { flex-direction: column; gap: 24px; padding: 36px; }
-      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .hero h1 { font-size: 48px; }
+      .problem-inner,
+      .security-inner,
+      .together-inner { grid-template-columns: 1fr; gap: 48px; }
+      .problem-pullquote { position: static; }
+      .how-steps { grid-template-columns: 1fr; gap: 2px; }
+      .how-step:first-child { border-radius: 12px 12px 0 0; }
+      .how-step:last-child  { border-radius: 0 0 12px 12px; }
+      .modules-grid { grid-template-columns: 1fr 1fr; }
+      .module-card:first-child { grid-row: span 1; }
+      .security-cards { grid-template-columns: 1fr; }
+      .proof-card { padding: 36px 28px; }
+      .proof-stats { grid-template-columns: 1fr; gap: 28px; }
+      .proof-stat + .proof-stat { padding-left: 0; border-left: none; border-top: 1px solid #e8e8e6; padding-top: 28px; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-tagline { text-align: left; }
+    }
+
+    /* ── RESPONSIVE: 480px ── */
+    @media (max-width: 480px) {
+      :root { --section-gap-xl: 80px; }
+      nav { padding: 0 20px; height: 54px; }
+      .hero h1 { font-size: 38px; }
+      .hero-subhead { font-size: 16px; }
+      .modules-grid { grid-template-columns: 1fr; }
+      .how-step-number { font-size: 80px; }
+      .proof-stat-number { font-size: 44px; }
     }
   </style>
 </head>
@@ -390,197 +744,347 @@
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-logo">
-    <svg width="120" height="38" viewBox="0 0 160 52" fill="none">
-      <circle cx="77" cy="7" r="4" fill="#5cb8a0"/>
-      <text x="80" y="44" font-family="Inter, Helvetica Neue, sans-serif" font-size="34" font-weight="200" fill="#1a1a1a" letter-spacing="13" text-anchor="middle">CURA</text>
-    </svg>
+    <img src="/cadenceos-icon.svg" class="nav-icon" alt="CadenceOS">
+    <span class="nav-logo-text">CadenceOS</span>
   </a>
-  <a href="mailto:carlos@curacadence.com" class="nav-cta">Get in touch</a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#modules">What's inside</a>
+    <a href="#security">Security</a>
+    <a href="#contact">Work with us</a>
+  </div>
+  <a href="#contact" class="nav-cta">Get in touch</a>
 </nav>
 
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-  <div class="hero-text">
-    <p class="hero-eyebrow">Custom Software Studio</p>
-    <h1 class="hero-headline">
-      Most software<br>
-      wasn't built<br>
-      <em>for you.</em>
+<section class="hero" data-bg="#0a0a0a">
+  <div class="hero-content">
+    <span class="eyebrow">Clinical Operating System</span>
+    <h1>
+      Your clinical system,<br>
+      finally <span class="accent">in software.</span>
     </h1>
-    <p class="hero-sub">
-      We build software that fits the way you actually work, not the other way around.
+    <p class="hero-subhead">
+      CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared with anyone else.
     </p>
     <a href="mailto:carlos@curacadence.com" class="hero-cta">
-      Start a conversation
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      Tell me about your practice
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
   </div>
-  <div class="hero-visual">
-    <svg viewBox="0 0 480 380" fill="none" xmlns="http://www.w3.org/2000/svg" overflow="visible" style="width:100%;height:auto;max-width:480px;">
-      <!-- Main card -->
-      <rect x="40" y="30" width="300" height="200" rx="10" stroke="#5cb8a0" stroke-width="1" stroke-opacity="0.4"/>
-      <!-- Card header bar -->
-      <rect x="40" y="30" width="300" height="36" rx="10" fill="#5cb8a0" fill-opacity="0.06"/>
-      <circle cx="62" cy="48" r="5" fill="#5cb8a0" fill-opacity="0.5"/>
-      <rect x="76" y="43" width="60" height="8" rx="3" fill="#5cb8a0" fill-opacity="0.25"/>
-      <rect x="298" y="43" width="28" height="8" rx="3" fill="#5cb8a0" fill-opacity="0.15"/>
-      <!-- Stat blocks row -->
-      <rect x="56" y="82" width="70" height="48" rx="6" stroke="#5cb8a0" stroke-width="0.8" stroke-opacity="0.3"/>
-      <rect x="58" y="90" width="32" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.2"/>
-      <rect x="58" y="102" width="50" height="10" rx="3" fill="#5cb8a0" fill-opacity="0.45"/>
-      <rect x="142" y="82" width="70" height="48" rx="6" stroke="#5cb8a0" stroke-width="0.8" stroke-opacity="0.3"/>
-      <rect x="144" y="90" width="32" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.2"/>
-      <rect x="144" y="102" width="50" height="10" rx="3" fill="#5cb8a0" fill-opacity="0.45"/>
-      <rect x="228" y="82" width="70" height="48" rx="6" stroke="#5cb8a0" stroke-width="0.8" stroke-opacity="0.3"/>
-      <rect x="230" y="90" width="32" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.2"/>
-      <rect x="230" y="102" width="50" height="10" rx="3" fill="#5cb8a0" fill-opacity="0.45"/>
-      <!-- Chart area -->
-      <rect x="56" y="146" width="270" height="64" rx="4" stroke="#5cb8a0" stroke-width="0.6" stroke-opacity="0.2"/>
-      <polyline points="66,196 96,172 126,182 156,158 186,168 216,148 246,162 276,150 306,158" stroke="#5cb8a0" stroke-width="1.5" stroke-opacity="0.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <polygon points="66,196 96,172 126,182 156,158 186,168 216,148 246,162 276,150 306,158 306,210 66,210" fill="#5cb8a0" fill-opacity="0.05"/>
-      <!-- Secondary card lower left -->
-      <rect x="40" y="248" width="140" height="100" rx="10" stroke="#5cb8a0" stroke-width="1" stroke-opacity="0.3"/>
-      <rect x="40" y="248" width="140" height="30" rx="10" fill="#5cb8a0" fill-opacity="0.05"/>
-      <rect x="56" y="258" width="48" height="7" rx="2" fill="#5cb8a0" fill-opacity="0.25"/>
-      <rect x="56" y="294" width="108" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.15"/>
-      <rect x="56" y="306" width="80" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.1"/>
-      <rect x="56" y="318" width="92" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.1"/>
-      <!-- Secondary card lower right -->
-      <rect x="196" y="248" width="180" height="100" rx="10" stroke="#5cb8a0" stroke-width="1" stroke-opacity="0.25"/>
-      <rect x="196" y="248" width="180" height="30" rx="10" fill="#5cb8a0" fill-opacity="0.04"/>
-      <rect x="212" y="258" width="56" height="7" rx="2" fill="#5cb8a0" fill-opacity="0.2"/>
-      <!-- Mini bars -->
-      <rect x="212" y="294" width="20" height="36" rx="2" fill="#5cb8a0" fill-opacity="0.35"/>
-      <rect x="238" y="308" width="20" height="22" rx="2" fill="#5cb8a0" fill-opacity="0.25"/>
-      <rect x="264" y="300" width="20" height="30" rx="2" fill="#5cb8a0" fill-opacity="0.3"/>
-      <rect x="290" y="285" width="20" height="45" rx="2" fill="#5cb8a0" fill-opacity="0.4"/>
-      <rect x="316" y="295" width="20" height="35" rx="2" fill="#5cb8a0" fill-opacity="0.28"/>
-      <rect x="342" y="306" width="20" height="24" rx="2" fill="#5cb8a0" fill-opacity="0.2"/>
-      <!-- Floating badge top right -->
-      <rect x="290" y="14" width="96" height="36" rx="18" stroke="#5cb8a0" stroke-width="1" stroke-opacity="0.6" fill="#0d0d0d" fill-opacity="0.95"/>
-      <circle cx="308" cy="32" r="5" fill="#5cb8a0" fill-opacity="0.8"/>
-      <rect x="320" y="27" width="52" height="6" rx="2" fill="#5cb8a0" fill-opacity="0.5"/>
-      <rect x="320" y="36" width="36" height="5" rx="2" fill="#5cb8a0" fill-opacity="0.25"/>
-    </svg>
-  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span class="hero-scroll-line"></span>
+    Scroll
   </div>
 </section>
 
 
-<!-- ABOUT -->
-<section class="about">
-  <div>
-    <p class="section-label">About CURA</p>
-    <h2 class="about-headline">
-      Cura means to heal.<br>
-      That's exactly what we do.
-    </h2>
-  </div>
-  <div class="about-body">
-    <p>
-      Every business has workflows that don't fit neatly into off-the-shelf tools. You end up stitching together software that was never meant for your specific problem. And the friction shows.
-    </p>
-    <p>
-      CURA builds custom software products tailored to your domain. We take the time to understand how you work, then build something that fits. It just works, because it was built for you.
-    </p>
-    <p>
-      We're a small, focused studio. We don't take on everything. We take on the right things, and we build them well.
-    </p>
-  </div>
-</section>
-
-
-<!-- WHAT WE BUILD -->
-<section class="what">
-  <p class="section-label">What We Build</p>
-  <h2 class="what-headline">Software products built for one specific problem.</h2>
-
-  <div class="pillars">
-
-    <div class="pillar">
-      <svg class="pillar-icon" viewBox="0 0 40 40" fill="none">
-        <rect width="40" height="40" rx="10" fill="#EBF5F2"/>
-        <path d="M12 20h4l3-7 4 14 3-10 2 3h4" stroke="#5cb8a0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <h3 class="pillar-title">Clinical & Health Tech</h3>
-      <p class="pillar-body">Documentation tools, patient management systems, care plan software built for the specific workflows of clinicians, not generic healthcare SaaS.</p>
-    </div>
-
-    <div class="pillar">
-      <svg class="pillar-icon" viewBox="0 0 40 40" fill="none">
-        <rect width="40" height="40" rx="10" fill="#EBF5F2"/>
-        <rect x="10" y="14" width="20" height="14" rx="3" stroke="#5cb8a0" stroke-width="1.8"/>
-        <path d="M15 14v-3a5 5 0 0 1 10 0v3" stroke="#5cb8a0" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-      <h3 class="pillar-title">Operations & Workflow</h3>
-      <p class="pillar-body">Internal tools, admin dashboards, and workflow automation for businesses that have outgrown spreadsheets and generic project management software.</p>
-    </div>
-
-    <div class="pillar">
-      <svg class="pillar-icon" viewBox="0 0 40 40" fill="none">
-        <rect width="40" height="40" rx="10" fill="#EBF5F2"/>
-        <circle cx="20" cy="20" r="8" stroke="#5cb8a0" stroke-width="1.8"/>
-        <path d="M20 12v4M20 24v4M12 20h4M24 20h4" stroke="#5cb8a0" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-      <h3 class="pillar-title">Domain-Specific Platforms</h3>
-      <p class="pillar-body">If your industry has processes that don't map to any existing tool, that's where we work best: niche, complex, and worth building right.</p>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- WORK IN PROGRESS -->
-<section class="work">
-  <p class="section-label">Current Work</p>
-  <h2 class="work-headline">Building in the open.</h2>
-
-  <div class="work-card">
-    <div class="work-card-icon">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <path d="M2 14h5l3-9 4 18 3-12 2 4 3-1h4" stroke="#5cb8a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <div>
-      <p class="work-card-label">In Development</p>
-      <h3 class="work-card-title">CadenceOS</h3>
-      <p class="work-card-body">
-        A clinical operating system for independent rehab and strength clinics. Covers the full patient lifecycle: intake, assessment, diagnosis, care planning, and session tracking. Built around the way clinicians actually think, not how generic EMRs work.
+<!-- THE PROBLEM -->
+<section class="problem" data-bg="#ffffff">
+  <div class="problem-inner">
+    <div class="problem-body reveal">
+      <p>
+        Your diagnostic logic is not in any software. It never has been. It lives in your head, and maybe in a document no one else understands, and in the sequence of decisions you make between when a patient walks in and when they leave. You have built something real. It just has no permanent home.
       </p>
-      <div class="work-card-status">
-        <span class="status-dot"></span>
-        Active build · First client onboarding in 2026
+      <p>
+        The tools you use right now were not built for you. Scheduling software manages your calendar. Documentation platforms speed up your notes. Protocol libraries give you someone else's evidence base to borrow. None of them know how you classify a condition, how you sequence care, or how you make the clinical decisions that define your practice. None of them can run your system, because none of them were built to hold one.
+      </p>
+    </div>
+    <div class="problem-pullquote reveal">
+      <p>Your clinical methodology is not a template. <span class="italic">Right now it only runs when you're in the room. It doesn't have to.</span></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how" data-bg="#f5f5f3">
+  <div class="how-header reveal">
+    <span class="eyebrow">How it works</span>
+    <h2>How CadenceOS works</h2>
+  </div>
+  <div class="how-steps">
+    <div class="how-step reveal">
+      <span class="how-step-number" aria-hidden="true">01</span>
+      <span class="how-step-label">Step 01</span>
+      <h3>We learn your system</h3>
+      <p>We document everything: your diagnostic logic, your care plan phases, your clinical protocols, your decision framework. If it lives in your head or a document no one else understands, we capture it.</p>
+    </div>
+    <div class="how-step reveal">
+      <span class="how-step-number" aria-hidden="true">02</span>
+      <span class="how-step-label">Step 02</span>
+      <h3>We build your instance</h3>
+      <p>A fully isolated deployment built around your protocols. Your data lives in your environment. Never co-mingled with another clinic. Never accessible to anyone else.</p>
+    </div>
+    <div class="how-step reveal">
+      <span class="how-step-number" aria-hidden="true">03</span>
+      <span class="how-step-label">Step 03</span>
+      <h3>Your practice runs on software</h3>
+      <p>Intake, assessment, care plan generation, session logging, progress tracking, patient recaps. All driven by your clinical logic, running while you're with patients.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- MODULES -->
+<section class="modules" id="modules" data-bg="#ffffff">
+  <div class="modules-header reveal">
+    <span class="eyebrow">Modules</span>
+    <h2>Everything a clinic needs. Built around your system.</h2>
+  </div>
+  <div class="modules-grid">
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="rgba(92,184,160,0.2)"/>
+        <path d="M10 11h12M10 15h8M10 19h10" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <h3>Patient Intake</h3>
+      <p>Capture presenting complaint, pain level, history, and triage status on arrival.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <rect x="9" y="8" width="14" height="16" rx="2" stroke="#5cb8a0" stroke-width="1.6"/>
+        <path d="M13 13h6M13 16.5h4M13 20h5" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <h3>Assessment Templates</h3>
+      <p>Your region-specific assessment logic, structured as guided clinical forms.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <circle cx="16" cy="14" r="5" stroke="#5cb8a0" stroke-width="1.6"/>
+        <path d="M16 19v4" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M13 23h6" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <h3>Diagnosis Flow</h3>
+      <p>Select from your proprietary diagnosis list. Auto-generate a clinical statement.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <path d="M8 11h16v4l-8 5-8-5v-4z" stroke="#5cb8a0" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M8 15v8h16v-8" stroke="#5cb8a0" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <h3>Care Plan Builder</h3>
+      <p>Your phase-based protocols, auto-populated by diagnosis and patient profile.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <path d="M5 19h4l2.5-7 3.5 10 2.5-6.5 1.5 3.5H27" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h3>Session Logging</h3>
+      <p>Track exercises performed, device metrics, ROM, manual therapy, and clinical notes.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <path d="M10 24V15l6-6 6 6v9H10z" stroke="#5cb8a0" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M14 24v-5h4v5" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h3>Exercise Library</h3>
+      <p>Your tagged exercise library with video links, searchable by region and phase.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <rect x="7" y="9" width="18" height="13" rx="2" stroke="#5cb8a0" stroke-width="1.6"/>
+        <path d="M11 22l-2 4M21 22l2 4M9 26h14" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <h3>Session Recap Email</h3>
+      <p>Auto-generated patient summary with HEP, exercises, and next session preview.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <rect x="7" y="7" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
+        <rect x="17" y="7" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
+        <rect x="7" y="17" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
+        <rect x="17" y="17" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
+      </svg>
+      <h3>Home Dashboard</h3>
+      <p>Active patient queue, care plan progress, and session status at a glance.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
+        <path d="M7 22l4.5-5.5 4 3 4.5-7.5 4 5.5" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M7 26h18" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <h3>Progress Dashboard</h3>
+      <p>Visual history per patient: pain trend, strength data, phase timeline.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- SECURITY -->
+<section class="security" id="security" data-bg="#1a3d6b">
+  <div class="security-inner">
+    <div class="reveal">
+      <span class="eyebrow">Security &amp; Compliance</span>
+      <h2>Your data. Your instance. Full stop.</h2>
+      <p class="security-body">
+        Most clinic software puts every client on a shared platform. One database, hundreds of practices, and a vendor who can see all of it. CadenceOS is built differently. Every practice runs on its own isolated instance: its own database, its own authentication, its own subdomain. Deployed on AWS and built to HIPAA standards from the ground up, with a Business Associate Agreement signed before any clinic goes live. Your patient data never touches another practice's environment. Your clinical protocols are never visible to anyone else. This is not just compliance documentation. It is the architectural guarantee that your IP stays yours.
+      </p>
+    </div>
+    <div class="security-cards">
+
+      <div class="security-card reveal">
+        <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M14 3l7 2.5V14c0 4.5-2.8 7.5-7 9-4.2-1.5-7-4.5-7-9V5.5L14 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M10 14l3 3L18 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>HIPAA Compliant</h3>
+        <p>A Business Associate Agreement is executed with every clinic before launch. No exceptions. Every patient record access is logged and traceable.</p>
+      </div>
+
+      <div class="security-card reveal">
+        <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="4" y="12" width="20" height="13" rx="3" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M9 12V9a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="14" cy="18.5" r="2" fill="currentColor"/>
+        </svg>
+        <h3>Partnered with AWS</h3>
+        <p>Every deployment runs on Amazon Web Services. Data encrypted at rest and in transit. The same infrastructure that healthcare organizations worldwide depend on.</p>
+      </div>
+
+      <div class="security-card reveal">
+        <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="16" y="3" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="3" y="16" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="16" y="16" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <h3>Fully Isolated Instances</h3>
+        <p>Your database. Your authentication. Your subdomain. Each clinic is a completely separate deployment. No co-mingling, no shared infrastructure, no shared risk.</p>
+      </div>
+
+      <div class="security-card reveal">
+        <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M7 22V12l4-4h6l4 4v10H7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M11 17h6M11 20h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <h3>Your IP, Protected</h3>
+        <p>Your clinical protocols are never shared with other subscribers, never used to populate a common library. What you built is yours. Architecturally, not just contractually.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- PROOF -->
+<section class="proof" data-bg="#f5f5f3">
+  <div class="proof-inner">
+    <span class="eyebrow reveal">Deployment</span>
+    <h2 class="reveal">Currently in the clinic</h2>
+
+    <div class="proof-card reveal">
+      <div class="proof-stats">
+        <div class="proof-stat">
+          <p class="proof-stat-number">9</p>
+          <p class="proof-stat-label">Regional protocols</p>
+        </div>
+        <div class="proof-stat">
+          <p class="proof-stat-number">229</p>
+          <p class="proof-stat-label">Tagged exercises</p>
+        </div>
+        <div class="proof-stat">
+          <p class="proof-stat-number">3</p>
+          <p class="proof-stat-label">Care phases</p>
+        </div>
+      </div>
+      <p class="proof-description">
+        CadenceOS is live at a strength and rehabilitation clinic in New Lenox, Illinois. Powering patient intake through discharge for a practitioner with 9 regional assessment protocols and 229 tagged exercises across three care phases.
+      </p>
+      <div class="proof-live">
+        <span class="proof-live-dot"></span>
+        Live deployment. Active patients.
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- CONTACT -->
-<section class="contact" id="contact">
-  <p class="section-label">Work With Us</p>
-  <h2 class="contact-headline">Have a problem<br>worth solving?</h2>
-  <p class="contact-sub">
-    We work with a small number of clients at a time. If you've been referred our way, we'd love to hear what you're building.
-  </p>
-  <a href="mailto:carlos@curacadence.com" class="contact-btn">
-    carlos@curacadence.com
-  </a>
+<!-- TOGETHER -->
+<section class="together" id="contact" data-bg="#ffffff">
+  <div class="together-inner">
+    <div class="together-left reveal">
+      <span class="eyebrow">Working Together</span>
+      <h2>You built your system. We build the software for it.</h2>
+      <a href="mailto:carlos@curacadence.com" class="together-cta">
+        Tell me about your practice
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="together-right reveal">
+      <p>
+        Every practitioner who has spent years developing a clinical methodology reaches the same dead end. The tools that exist were designed for someone else. You adapt, you work around, you keep your actual logic somewhere the software can't touch. That is the problem CadenceOS was built to solve.
+      </p>
+      <p>
+        This is not a subscription you activate. It starts with a conversation. We learn your system: your assessment logic, your diagnosis structure, your decision framework, your care plan progressions, your clinical protocols. Everything that currently lives in your head or a document no one else understands. We capture all of it.
+      </p>
+      <p>
+        Then we build your instance. Your own deployment, your own database, your own subdomain. Your protocols are loaded as your IP, not shared with anyone else, not accessible to any other practice. When you open CadenceOS, you are not browsing a generic tool. You are running your clinical system as software, exactly the way you built it.
+      </p>
+      <p>
+        We work with a small number of practitioners at a time. This is not a product you self-onboard. It is a build scoped to your methodology, your specialty, your practice. After launch, a retainer covers hosting, security, monitoring, and support. You stay in the product as your system evolves.
+      </p>
+      <p class="closing">
+        If you have spent years building a clinical framework that no software has ever been able to hold, let's talk.
+      </p>
+      <a href="mailto:carlos@curacadence.com" class="together-cta" style="margin-top: 32px;">
+        Tell me about your practice
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
 </section>
 
 
 <!-- FOOTER -->
 <footer>
-  <svg width="72" height="24" viewBox="0 0 160 52" fill="none">
-    <circle cx="77" cy="7" r="4" fill="#5cb8a0"/>
-    <text x="80" y="44" font-family="Inter, Helvetica Neue, sans-serif" font-size="34" font-weight="200" fill="#555" letter-spacing="13" text-anchor="middle">CURA</text>
-  </svg>
-  <p class="footer-right">© 2026 CURA LLC · All rights reserved</p>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <img src="/cadenceos-icon.svg" alt="CadenceOS" width="24" height="24" style="border-radius:5px;">
+        <span class="footer-brand-name">CadenceOS</span>
+      </div>
+      <div class="footer-meta">
+        Operated by CURA LLC. McLean, Virginia<br>
+        <a href="mailto:carlos@curacadence.com">carlos@curacadence.com</a><br>
+        <a href="/privacy">Privacy Policy</a>&nbsp;&nbsp;·&nbsp;&nbsp;BAA available on request
+      </div>
+    </div>
+    <p class="footer-tagline">
+      Each clinic deployment is isolated, HIPAA-compliant, and built to your specifications.
+    </p>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 CURA LLC</span>
+    <span>All rights reserved</span>
+  </div>
 </footer>
 
+<script src="/main.js"></script>
 </body>
 </html>
