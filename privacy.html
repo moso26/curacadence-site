@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Privacy Policy — CadenceOS</title>
+  <meta name="description" content="Privacy Policy for CadenceOS, operated by CURA LLC.">
+
+  <meta name="robots" content="noindex">
+
+  <!-- Security: CSP -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'none'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d0d0d'/%3E%3Ccircle cx='16' cy='11' r='3.5' fill='%235cb8a0'/%3E%3Cpath d='M7 22h3l2-6 3 9 2-6 1.5 3H25' stroke='%235cb8a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy:  #1a3d6b;
+      --teal:  #5cb8a0;
+      --black: #0d0d0d;
+      --white: #ffffff;
+      --gray:  #f5f5f5;
+      --text:  #1a1a1a;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--teal);
+      border-radius: 50%;
+    }
+
+    .logo-text {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    .logo-text strong { font-weight: 500; }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 48px 120px;
+    }
+
+    .content h1 {
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--navy);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .effective {
+      font-size: 13px;
+      font-weight: 300;
+      color: #888;
+      margin-bottom: 56px;
+    }
+
+    .content h2 {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--navy);
+      margin: 40px 0 12px;
+    }
+
+    .content p {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .content a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    .content a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-brand .logo-dot { background: var(--teal); }
+    .footer-brand .logo-text { color: rgba(255,255,255,0.4); font-size: 15px; }
+
+    .footer-right {
+      font-size: 12px;
+      font-weight: 300;
+      color: #333;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 16px; }
+      .content { padding: 48px 16px 80px; }
+      footer { flex-direction: column; gap: 16px; padding: 28px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <span class="logo-dot"></span>
+    <span class="logo-text">Cadence<strong>OS</strong></span>
+  </a>
+</nav>
+
+<div class="content">
+  <h1>Privacy Policy</h1>
+  <p class="effective">Effective date: April 2026</p>
+
+  <h2>Who we are</h2>
+  <p>
+    CadenceOS is operated by CURA LLC, a Virginia limited liability company. This policy covers the curacadence.com marketing site. It does not cover clinic-specific deployments, which are governed by separate Business Associate Agreements (BAAs) and data processing agreements between CURA LLC and each clinic.
+  </p>
+
+  <h2>What this site collects</h2>
+  <p>
+    curacadence.com is a static marketing site. It does not have user accounts, forms, cookies, analytics scripts, or any tracking technology. No personal data is collected or stored by this website.
+  </p>
+  <p>
+    The only interactive element is a mailto link. Clicking it opens your local email client. Any email you send to carlos@curacadence.com is received and processed by CURA LLC. We use that information solely to respond to your inquiry.
+  </p>
+
+  <h2>Clinic deployments and patient data</h2>
+  <p>
+    Each clinic that uses CadenceOS runs on a fully isolated instance: its own database, its own authentication, its own subdomain. Patient data stored within a clinic's CadenceOS deployment is the responsibility of that clinic. CURA LLC acts as a Business Associate under HIPAA and executes a BAA with each clinic prior to launch.
+  </p>
+  <p>
+    Patient data is never shared between clinics, never used to train models or populate shared protocol libraries, and never accessible to CURA LLC staff except as required to perform agreed hosting and support services.
+  </p>
+
+  <h2>Third-party services</h2>
+  <p>
+    This site loads fonts from Google Fonts (fonts.googleapis.com). Google may collect standard server log data when your browser requests font files. See Google's privacy policy for details. No other third-party services are loaded by this site.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about this policy or a BAA request: <a href="mailto:carlos@curacadence.com">carlos@curacadence.com</a>
+  </p>
+</div>
+
+<footer>
+  <div class="footer-brand">
+    <span class="logo-dot"></span>
+    <span class="logo-text">Cadence<strong>OS</strong></span>
+  </div>
+  <p class="footer-right">Operated by CURA LLC &nbsp;·&nbsp; McLean, Virginia</p>
+</footer>
+
+</body>
+</html>
