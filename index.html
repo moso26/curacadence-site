@@ -196,6 +196,19 @@
     }
     .nav-cta:hover { background: var(--teal-dark); transform: translateX(2px); }
 
+    .nav-login {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin-right: 8px;
+    }
+    nav.scrolled .nav-login { color: var(--text-muted); }
+    .nav-login:hover,
+    nav.scrolled .nav-login:hover { color: var(--teal); }
+
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
@@ -875,6 +888,7 @@
     <a href="#security">Security</a>
     <a href="#contact">Work with us</a>
   </div>
+  <a href="https://rebuilt.curacadence.com/login" class="nav-login">Client Login</a>
   <a href="#contact" class="nav-cta">Get in touch</a>
 </nav>
 
