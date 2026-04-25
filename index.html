@@ -24,7 +24,7 @@
   <meta name="twitter:title" content="CadenceOS — Clinical Software Built Around Your Protocols">
   <meta name="twitter:description" content="CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared.">
 
-  <!-- Security: CSP -->
+  <!-- Security: CSP — marketing site allows inline styles -->
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'none'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; frame-ancestors 'none';">
 
@@ -33,844 +33,688 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.ico">
 
-  <!-- Fonts: Poppins + Lato -->
+  <!-- Fonts: Poppins (200 added for editorial display) + Lato -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
   <style>
     /* ── RESET ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
 
     /* ── TOKENS ── */
     :root {
-      --black:       #0a0a0a;
-      --navy:        #1a3d6b;
-      --navy-mid:    #1e4a7c;
-      --teal:        #5cb8a0;
-      --teal-dark:   #2a7a68;
-      --gray-dark:   #f0f0ee;
-      --gray:        #f5f5f3;
-      --white:       #ffffff;
-      --text:        #1a1a1a;
-      --text-muted:  #666666;
+      /* CURA marketing palette — atmospheric navy → teal */
+      --cura-navy:        #0B1F35;
+      --cura-navy-deep:   #050E1C;
+      --cura-teal:        #2EC4B6;
+      --cura-teal-soft:   #5AD9CC;
 
-      --font-display: 'Poppins', system-ui, sans-serif;
-      --font-body:    'Lato', system-ui, sans-serif;
+      /* Glass + glow primitives */
+      --glass-fill-dark:   rgba(255,255,255,0.06);
+      --glass-stroke-dark: rgba(255,255,255,0.10);
+      --glass-blur:        16px;
+      --glow-color:        rgba(46,196,182,0.55);
+      --glow-radius:       64px;
+      --glow-strength:     0.65;
 
-      --section-gap-xl: 160px;
-      --section-gap-lg: 120px;
-      --section-gap-md: 80px;
-      --content-max:    1100px;
-      --reading-max:    680px;
+      /* Atmosphere */
+      --aurora-grain-opacity: 0.18;
+
+      --font-display: 'Poppins', system-ui, -apple-system, sans-serif;
+      --font-body:    'Lato', system-ui, -apple-system, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--font-body);
       font-size: 17px;
-      line-height: 1.75;
-      color: var(--text);
-      background: var(--white);
-      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+      color: #fff;
+      background: var(--cura-navy-deep);
+      overflow-x: hidden;
     }
 
-    h1, h2 {
-      font-family: var(--font-display);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
+    /* ============================================================
+       AURORA — slowly drifting radial gradients + colored orbs
+       Note: .grain below sets position:relative; .aurora-root must
+       stay absolute. Order matters — .grain is declared first so
+       .aurora-root wins on the cascade.
+       ============================================================ */
+    .grain { position: relative; }
+    .grain::after {
+      content: "";
+      position: absolute; inset: 0;
+      pointer-events: none;
+      opacity: var(--aurora-grain-opacity);
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
     }
 
-    h3, h4 {
-      font-family: var(--font-display);
-      font-weight: 500;
-      letter-spacing: -0.01em;
+    .aurora-root { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .aurora-cura {
+      background: radial-gradient(120% 80% at 50% 0%,
+        #1a3a5c 0%, #0B1F35 55%, #070f1c 100%);
+    }
+    .aurora-orb {
+      position: absolute;
+      pointer-events: none;
+      animation: aurora-drift 22s ease-in-out infinite;
+    }
+    .aurora-orb--teal      { background: radial-gradient(closest-side, rgba(46,196,182,0.65), rgba(46,196,182,0.28) 45%, rgba(46,196,182,0) 80%); }
+    .aurora-orb--teal-soft { background: radial-gradient(closest-side, rgba(90,217,204,0.55), rgba(90,217,204,0.20) 45%, rgba(90,217,204,0) 80%); }
+    .aurora-orb--navy      { background: radial-gradient(closest-side, rgba(58,110,160,0.75), rgba(58,110,160,0.30) 45%, rgba(58,110,160,0) 80%); }
+    .orb-tl { top: -20%;    left: -20%;  width: 70%; height: 90%; }
+    .orb-tr { top: -10%;    right: -20%; width: 60%; height: 80%; animation-delay: -7s; }
+    .orb-bl { bottom: -25%; left: -15%;  width: 70%; height: 90%; animation-delay: -14s; }
+    .orb-br { bottom: -20%; right: -25%; width: 70%; height: 90%; animation-delay: -4s; }
+    .orb-c  { top: 10%;     left: 20%;   width: 60%; height: 80%; opacity: 0.55; animation-delay: -11s; }
+
+    @keyframes aurora-drift {
+      0%   { transform: translate(-3%, -2%) scale(1); }
+      50%  { transform: translate(3%, 2%) scale(1.06); }
+      100% { transform: translate(-3%, -2%) scale(1); }
     }
 
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      .aurora-orb, .ekg-pulse { animation: none !important; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ============================================================
+       GLASS-DARK — frosted card on atmospheric backgrounds
+       ============================================================ */
+    .glass-dark {
+      background: var(--glass-fill-dark);
+      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      border: 1px solid var(--glass-stroke-dark);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.08) inset,
+        0 20px 40px -20px rgba(0,0,0,0.5);
+      border-radius: 22px;
+    }
+
+    /* ============================================================
+       GLOW-HOST — soft halo behind primary CTAs
+       ============================================================ */
+    .glow-host { position: relative; isolation: isolate; }
+    .glow-host::before {
+      content: "";
+      position: absolute; inset: -18px;
+      background: radial-gradient(60% 70% at 50% 60%, var(--glow-color) 0%, transparent 70%);
+      filter: blur(calc(var(--glow-radius) * 0.4));
+      opacity: var(--glow-strength);
+      z-index: -1;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    /* ============================================================
+       CHIP — small pill primitive
+       ============================================================ */
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 32px; padding: 0 14px;
+      border-radius: 999px;
+      font: 400 13px var(--font-body);
+      letter-spacing: 0.01em;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(8px) saturate(140%);
+      -webkit-backdrop-filter: blur(8px) saturate(140%);
+    }
+    .chip--dot::before {
+      content: "";
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cura-teal-soft);
+      box-shadow: 0 0 8px var(--cura-teal-soft);
+      animation: ekg-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes ekg-pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.35; }
+    }
+
+    /* ============================================================
+       EYEBROW — small uppercase label
+       ============================================================ */
     .eyebrow {
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
+      font: 600 11px var(--font-body);
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--teal);
-      display: block;
-      margin-bottom: 20px;
+      color: var(--cura-teal);
     }
 
-    /* ── REVEAL ANIMATION ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s cubic-bezier(0.33, 0, 0, 1),
-                  transform 0.7s cubic-bezier(0.33, 0, 0, 1);
+    /* ============================================================
+       BUTTONS
+       ============================================================ */
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      height: 52px; padding: 0 28px;
+      background: var(--cura-teal);
+      color: var(--cura-navy);
+      font: 600 15px var(--font-display);
+      letter-spacing: 0.005em;
+      border-radius: 12px;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.4) inset,
+        0 -1px 0 rgba(0,0,0,0.06) inset,
+        0 12px 30px -10px rgba(46,196,182,0.55);
+      transition: transform .15s ease, box-shadow .25s ease;
     }
-    .reveal.revealed {
-      opacity: 1;
-      transform: translateY(0);
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      height: 52px; padding: 0 22px;
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font: 400 15px var(--font-display);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background .2s ease, border-color .2s ease;
     }
-    .reveal:nth-child(2) { transition-delay: 0.1s; }
-    .reveal:nth-child(3) { transition-delay: 0.2s; }
-    .reveal:nth-child(4) { transition-delay: 0.15s; }
-    .reveal:nth-child(5) { transition-delay: 0.25s; }
-    .reveal:nth-child(6) { transition-delay: 0.35s; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.22); }
 
-    /* ── NAV ── */
+    /* ============================================================
+       NAV
+       ============================================================ */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 0 40px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: transparent;
-      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 72px;
+      padding: 0 clamp(20px, 4vw, 56px);
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 50;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+      border-bottom: 1px solid transparent;
     }
     nav.scrolled {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+      background: rgba(5,14,28,0.65);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border-bottom-color: rgba(255,255,255,0.06);
     }
-
     .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 12px;
+      font: 500 15px var(--font-display);
+      letter-spacing: 0.02em;
+      color: #fff;
     }
     .nav-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 7px;
-      flex-shrink: 0;
-      display: block;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.10) inset;
     }
-    .nav-logo-text {
-      font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--white);
-      transition: color 0.4s ease;
-    }
-    nav.scrolled .nav-logo-text { color: var(--navy); }
-
     .nav-links {
-      display: flex;
-      gap: 40px;
-      list-style: none;
+      display: flex; gap: 36px;
+      font: 400 14px var(--font-body);
+      color: rgba(255,255,255,0.7);
     }
-    .nav-links a {
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      transition: color 0.3s ease;
+    .nav-links a:hover { color: #fff; }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .nav-signin {
+      display: inline-flex; align-items: center;
+      height: 36px; padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font: 400 13px var(--font-body);
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: background .2s ease;
     }
-    nav.scrolled .nav-links a { color: var(--text-muted); }
-    .nav-links a:hover,
-    nav.scrolled .nav-links a:hover { color: var(--teal); }
-
+    .nav-signin:hover { background: rgba(255,255,255,0.12); }
     .nav-cta {
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 700;
-      padding: 10px 22px;
-      border-radius: 6px;
-      border: none;
-      color: var(--white);
-      text-decoration: none;
-      transition: background 0.25s ease, transform 0.2s ease;
-      background: var(--teal);
-      letter-spacing: 0.02em;
+      display: inline-flex; align-items: center;
+      height: 36px; padding: 0 16px;
+      border-radius: 999px;
+      background: var(--cura-teal);
+      color: var(--cura-navy);
+      font: 600 13px var(--font-display);
+      letter-spacing: 0.01em;
+      transition: filter .2s ease;
     }
-    .nav-cta:hover { background: var(--teal-dark); transform: translateX(2px); }
+    .nav-cta:hover { filter: brightness(1.08); }
 
-    .nav-login {
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      transition: color 0.3s ease;
-      margin-right: 8px;
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
     }
-    nav.scrolled .nav-login { color: var(--text-muted); }
-    .nav-login:hover,
-    nav.scrolled .nav-login:hover { color: var(--teal); }
 
-    /* ── HERO ── */
+    /* ============================================================
+       HERO
+       ============================================================ */
     .hero {
-      min-height: 100vh;
-      padding: 0 40px;
-      display: flex;
-      align-items: center;
-      background: var(--black);
       position: relative;
+      min-height: 100vh;
+      padding: 132px clamp(20px, 4vw, 56px) 80px;
       overflow: hidden;
     }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      opacity: 0.3;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: -200px; right: -200px;
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(92,184,160,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-inner {
+    .hero-grid {
       position: relative;
-      z-index: 1;
-      max-width: var(--content-max);
+      z-index: 4;
+      max-width: 1280px;
       margin: 0 auto;
-      width: 100%;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 48px;
       align-items: center;
-      justify-content: space-between;
-      gap: 80px;
-      padding-top: 60px;
     }
-    .hero-content {
-      max-width: 580px;
-      flex-shrink: 0;
+    .hero-copy { max-width: 760px; }
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-weight: 200;
+      font-size: clamp(44px, 8vw, 92px);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      margin: 28px 0;
+      color: #fff;
     }
-    .hero-visual {
-      flex: 0 0 300px;
+    .hero-h1 em {
+      font-style: italic;
+      font-weight: 300;
+      background: linear-gradient(120deg, var(--cura-teal-soft), var(--cura-teal));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
     }
+    .hero-sub {
+      font: 300 19px var(--font-body);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.78);
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+    .hero-ctas {
+      display: flex; flex-wrap: wrap;
+      gap: 14px; align-items: center;
+      margin-bottom: 56px;
+    }
+    .hero-proof {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .hero-proof .chip {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.78);
+      border-color: rgba(255,255,255,0.14);
+      font-size: 12px;
+    }
+
+    /* Floating CadenceOS card */
     .hero-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px;
-      padding: 28px 24px;
+      padding: 24px;
+      width: 100%;
+    }
+    .hero-card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
     }
     .hero-card-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--teal);
+      display: flex; align-items: center; gap: 6px;
+      font: 400 11px var(--font-body);
+      color: rgba(255,255,255,0.65);
     }
-    .hero-card-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0;
-      animation: pulse-dot 2s ease-in-out infinite;
+    .hero-card-status::before {
+      content: "";
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cura-teal-soft);
+      box-shadow: 0 0 8px var(--cura-teal-soft);
+      animation: ekg-pulse 2.4s ease-in-out infinite;
     }
-    .hero-card-modules {
-      display: flex;
-      flex-direction: column;
+    .hero-card-title {
+      font: 300 26px var(--font-display);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
     }
-    .hero-card-module {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-family: var(--font-body);
-      font-size: 13px;
-      color: rgba(255,255,255,0.55);
+    .hero-card-body {
+      font: 300 14px var(--font-body);
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+      margin-bottom: 22px;
     }
-    .hero-card-module:last-child { border-bottom: none; }
-    .hero-card-module svg {
-      width: 14px;
-      height: 14px;
-      color: var(--teal);
-      flex-shrink: 0;
-    }
-    .hero-card-wave {
-      margin-top: 20px;
+    .hero-card-stats {
+      border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      opacity: 0.5;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      font: 400 12px var(--font-body);
+      color: rgba(255,255,255,0.65);
     }
-    .hero h1 {
-      font-size: clamp(52px, 7vw, 88px);
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 28px;
-      line-height: 1.02;
-      letter-spacing: -0.04em;
-    }
-    .hero h1 .accent { color: var(--teal); }
-    .hero-subhead {
-      font-family: var(--font-body);
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.55);
-      max-width: 520px;
-      margin-bottom: 48px;
-    }
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      padding: 14px 28px;
-      background: var(--teal);
-      color: var(--white);
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.25s ease, transform 0.2s ease;
-    }
-    .hero-cta:hover { background: var(--teal-dark); transform: translateX(3px); }
-    .hero-cta svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
-    .hero-cta:hover svg { transform: translateX(3px); }
-    .hero-response {
-      margin-top: 14px;
-      font-size: 12px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.28);
-      letter-spacing: 0.02em;
-    }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 32px;
-      left: 40px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-body);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-    }
-    .hero-scroll-line {
-      width: 32px;
-      height: 1px;
-      background: rgba(255,255,255,0.2);
-    }
-
-    /* ── PROBLEM ── */
-    .problem {
-      background: var(--white);
-      padding: var(--section-gap-xl) 40px;
-    }
-    .problem-inner {
-      max-width: var(--content-max);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .problem-body {
-      font-family: var(--font-body);
-      font-size: 18px;
-      line-height: 1.8;
-      color: var(--text);
-    }
-    .problem-body p + p { margin-top: 28px; }
-    .problem-body p:first-child::first-letter {
-      font-family: var(--font-display);
-      font-size: 5em;
-      font-weight: 600;
-      color: var(--navy);
-      float: left;
-      line-height: 0.82;
-      margin-right: 10px;
-      margin-top: 6px;
-      opacity: 0.18;
-    }
-    .problem-pullquote {
-      position: sticky;
-      top: 120px;
-      padding-left: 28px;
-      border-left: 2px solid var(--teal);
-    }
-    .problem-pullquote p {
-      font-family: var(--font-display);
-      font-size: clamp(22px, 2.5vw, 30px);
-      font-weight: 400;
-      line-height: 1.4;
-      color: var(--navy);
+    .hero-card-stats span {
+      display: block;
+      color: #fff;
+      font: 300 22px var(--font-display);
       letter-spacing: -0.02em;
     }
-    .problem-pullquote .italic {
-      font-style: italic;
-      color: var(--teal-dark);
+
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+      .hero-card-wrap { max-width: 420px; }
     }
 
-    /* ── HOW IT WORKS ── */
-    .how {
-      background: var(--gray);
-      padding: var(--section-gap-xl) 40px;
-    }
-    .how-header {
-      max-width: var(--content-max);
-      margin: 0 auto 80px;
-    }
-    .how-header h2 {
-      font-size: clamp(40px, 5vw, 60px);
-      color: var(--navy);
-      margin-top: 16px;
-    }
-    .how-steps {
-      max-width: var(--content-max);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .how-step {
-      background: var(--white);
-      padding: 48px 40px 56px;
+    /* ============================================================
+       PILLARS — three glass-dark cards
+       ============================================================ */
+    .pillars {
       position: relative;
-      overflow: hidden;
+      padding: clamp(80px, 14vw, 140px) clamp(20px, 4vw, 56px);
+      background: linear-gradient(180deg, var(--cura-navy-deep) 0%, var(--cura-navy) 100%);
     }
-    .how-step:first-child { border-radius: 12px 0 0 12px; }
-    .how-step:last-child  { border-radius: 0 12px 12px 0; }
-    .how-step-number {
-      position: absolute;
-      top: -16px;
-      right: 24px;
+    .pillars-inner { max-width: 1200px; margin: 0 auto; }
+    .pillars-eyebrow { margin-bottom: 18px; }
+    .pillars-h2 {
       font-family: var(--font-display);
-      font-size: 120px;
-      font-weight: 700;
-      color: rgba(26,61,107,0.05);
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
+      font-weight: 200;
+      font-size: clamp(32px, 5.6vw, 64px);
+      line-height: 1.05;
       letter-spacing: -0.04em;
+      margin-bottom: 72px;
+      max-width: 800px;
+      color: #fff;
     }
-    .how-step-label {
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--teal);
-      display: block;
-      margin-bottom: 20px;
-    }
-    .how-step h3 {
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-    .how-step p {
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--text-muted);
-    }
-
-    /* ── MODULES ── */
-    .modules {
-      background: var(--white);
-      padding: var(--section-gap-xl) 40px;
-    }
-    .modules-header {
-      max-width: var(--content-max);
-      margin: 0 auto 72px;
-    }
-    .modules-header h2 {
-      font-size: clamp(36px, 4.5vw, 56px);
-      color: var(--navy);
-      max-width: 560px;
-      margin-top: 16px;
-    }
-    .modules-grid {
-      max-width: var(--content-max);
-      margin: 0 auto;
+    .pillars-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 20px;
     }
-    .module-card {
-      background: var(--white);
-      border: 1px solid #e8e8e6;
-      border-radius: 12px;
-      padding: 32px 28px;
-      transition: border-color 0.25s ease, transform 0.25s ease;
+    .pillar {
+      padding: 28px;
+      border-radius: 20px;
+      min-height: 280px;
+      display: flex; flex-direction: column; justify-content: space-between;
     }
-    .module-card:hover {
-      border-color: var(--teal);
-      transform: translateY(-2px);
+    .pillar-kicker {
+      font: 400 12px ui-monospace, "SF Mono", Menlo, monospace;
+      color: var(--cura-teal-soft);
+      margin-bottom: 24px;
     }
-    .module-card:first-child {
-      grid-row: span 2;
-      background: var(--navy);
-      border-color: var(--navy);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 40px 36px;
+    .pillar-title {
+      font: 300 26px var(--font-display);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: #fff;
     }
-    .module-card:first-child:hover { transform: none; }
-    .module-card:first-child h3 { color: var(--white); font-size: 22px; }
-    .module-card:first-child p  { color: rgba(255,255,255,0.6); font-size: 15px; }
-    .module-icon {
-      width: 36px;
-      height: 36px;
-      margin-bottom: 20px;
-      opacity: 0.9;
-    }
-    .module-card h3 {
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 10px;
-    }
-    .module-card p {
-      font-size: 14px;
+    .pillar-body {
+      font: 300 15px var(--font-body);
       line-height: 1.65;
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.72);
+    }
+    .pillar-tag {
+      margin-top: 24px;
+      align-self: flex-start;
+      font-size: 12px;
+    }
+    .pillar-tag--code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 12px;
+      letter-spacing: 0;
+      color: var(--cura-teal-soft);
+      background: rgba(46,196,182,0.10);
+      border-color: rgba(46,196,182,0.30);
     }
 
-    /* ── SECURITY ── */
-    .security {
-      background: var(--navy);
-      padding: var(--section-gap-xl) 40px;
+    @media (max-width: 900px) {
+      .pillars-grid { grid-template-columns: 1fr; }
+      .pillar { min-height: 0; }
     }
-    .security-inner {
-      max-width: var(--content-max);
+
+    /* ============================================================
+       PROBLEM — diagnostic prose with pull-quote sidebar
+       ============================================================ */
+    .problem {
+      position: relative;
+      padding: clamp(96px, 14vw, 160px) clamp(20px, 4vw, 56px);
+      background: linear-gradient(180deg, var(--cura-navy) 0%, var(--cura-navy-deep) 100%);
+    }
+    .problem-inner {
+      max-width: 1200px;
       margin: 0 auto;
+    }
+    .problem-eyebrow { margin-bottom: 48px; }
+    .problem-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
       gap: 80px;
       align-items: start;
     }
-    .security .eyebrow { color: rgba(92,184,160,0.9); }
-    .security h2 {
-      font-size: clamp(36px, 4.5vw, 56px);
-      color: var(--white);
-      margin-top: 16px;
-      margin-bottom: 28px;
+    .problem-body p {
+      font: 300 19px var(--font-body);
+      line-height: 1.7;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 24px;
+    }
+    .problem-body p:last-child { margin-bottom: 0; }
+    .problem-pullquote {
+      position: sticky;
+      top: 100px;
+      padding: 28px 32px;
+      border-left: 2px solid var(--cura-teal);
+    }
+    .problem-pullquote p {
+      font: 300 22px var(--font-display);
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+      color: rgba(255,255,255,0.92);
+    }
+    .problem-pullquote em {
+      font-style: italic;
+      background: linear-gradient(120deg, var(--cura-teal-soft), var(--cura-teal));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+    @media (max-width: 900px) {
+      .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+      .problem-pullquote { position: static; }
+    }
+
+    /* ============================================================
+       SECURITY — data sovereignty, 4-card grid
+       ============================================================ */
+    .security {
+      position: relative;
+      padding: clamp(96px, 14vw, 160px) clamp(20px, 4vw, 56px);
+      background: linear-gradient(180deg, var(--cura-navy-deep) 0%, var(--cura-navy) 100%);
+      overflow: hidden;
+    }
+    .security::before {
+      content: "";
+      position: absolute;
+      top: -10%; right: -15%;
+      width: 60%; height: 80%;
+      background: radial-gradient(closest-side, rgba(46,196,182,0.16), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .security-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .security-head { max-width: 820px; margin-bottom: 64px; }
+    .security-head h2 {
+      font: 200 clamp(34px, 5vw, 52px) var(--font-display);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin: 16px 0 28px;
+      color: #fff;
     }
     .security-body {
-      font-size: 17px;
+      font: 300 17px var(--font-body);
       line-height: 1.75;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.78);
     }
     .security-cards {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
     }
     .security-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-left: 3px solid var(--teal);
-      border-radius: 12px;
-      padding: 28px 24px;
-      transition: background 0.25s ease;
+      padding: 28px;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
     }
-    .security-card:hover { background: rgba(255,255,255,0.08); }
+    .security-card::before {
+      content: "";
+      position: absolute;
+      top: 28px; left: 0;
+      width: 3px; height: 28px;
+      border-radius: 0 2px 2px 0;
+      background: var(--cura-teal);
+    }
     .security-card-icon {
-      color: var(--teal);
-      width: 28px;
-      height: 28px;
-      margin-bottom: 16px;
+      width: 28px; height: 28px;
+      color: var(--cura-teal-soft);
+      margin-bottom: 18px;
     }
     .security-card h3 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--white);
+      font: 400 16px var(--font-display);
+      letter-spacing: -0.005em;
       margin-bottom: 10px;
+      color: #fff;
     }
     .security-card p {
-      font-size: 13.5px;
+      font: 300 13px var(--font-body);
       line-height: 1.65;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.65);
     }
+    @media (max-width: 980px) { .security-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 540px) { .security-cards { grid-template-columns: 1fr; } }
 
-    /* ── PROOF ── */
-    .proof {
-      background: var(--gray);
-      padding: var(--section-gap-xl) 40px;
-    }
-    .proof-inner {
-      max-width: var(--content-max);
-      margin: 0 auto;
-    }
-    .proof-inner h2 {
-      font-size: clamp(40px, 5vw, 60px);
-      color: var(--navy);
-      margin-top: 16px;
-      margin-bottom: 56px;
-    }
-    .proof-card {
-      background: var(--white);
-      border: 1px solid #e8e8e6;
-      border-radius: 16px;
-      padding: 56px;
-      max-width: 740px;
-    }
-    .proof-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      margin-bottom: 40px;
-      padding-bottom: 40px;
-      border-bottom: 1px solid #e8e8e6;
-    }
-    .proof-stat + .proof-stat {
-      padding-left: 40px;
-      border-left: 1px solid #e8e8e6;
-    }
-    .proof-stat-number {
-      font-family: var(--font-display);
-      font-size: clamp(64px, 6vw, 80px);
-      font-weight: 300;
-      color: var(--navy);
-      line-height: 1;
-      margin-bottom: 8px;
-      letter-spacing: -0.04em;
-    }
-    .proof-stat-label {
-      font-family: var(--font-body);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .proof-description {
-      font-size: 16px;
-      line-height: 1.75;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-    }
-    .proof-live {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--teal-dark);
-    }
-    .proof-live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0;
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(92,184,160,0.4); }
-      50%       { box-shadow: 0 0 0 6px rgba(92,184,160,0); }
-    }
-
-    /* ── TOGETHER ── */
+    /* ============================================================
+       TOGETHER — primary conversion section
+       ============================================================ */
     .together {
-      background: var(--white);
-      padding: var(--section-gap-xl) 40px;
+      position: relative;
+      padding: clamp(96px, 14vw, 160px) clamp(20px, 4vw, 56px);
+      background: var(--cura-navy);
+      overflow: hidden;
     }
-    .together-inner {
-      max-width: var(--content-max);
+    .together-grid {
+      position: relative;
+      z-index: 4;
+      max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 100px;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: 80px;
       align-items: start;
     }
     .together-left h2 {
-      font-size: clamp(36px, 4vw, 52px);
-      color: var(--navy);
-      margin-top: 16px;
-      margin-bottom: 20px;
+      font: 200 clamp(34px, 5vw, 52px) var(--font-display);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin: 16px 0 24px;
+      color: #fff;
     }
-    .together-subhead {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 500;
-      color: var(--navy);
-      opacity: 0.65;
+    .together-sub {
+      font: 300 18px var(--font-body);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.72);
       margin-bottom: 36px;
-      line-height: 1.4;
-      letter-spacing: -0.01em;
+    }
+    .together-cta { margin-bottom: 20px; }
+    .together-meta {
+      font: 400 13px var(--font-body);
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 6px;
     }
     .together-pricing {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--navy);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #e8e8e6;
-      opacity: 0.7;
+      font: 400 13px var(--font-body);
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 28px;
     }
     .together-email {
-      display: block;
-      margin-top: 12px;
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--teal-dark);
-      text-decoration: none;
-      transition: color 0.2s ease;
+      font: 400 14px ui-monospace, "SF Mono", Menlo, monospace;
+      color: var(--cura-teal-soft);
+      border-bottom: 1px dashed rgba(90,217,204,0.4);
+      padding-bottom: 1px;
+      transition: color .2s, border-color .2s;
     }
-    .together-email:hover { color: var(--teal); }
-    .together-response {
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--text-muted);
-      margin-top: 14px;
-      letter-spacing: 0.02em;
-      opacity: 0.7;
-    }
-    .together-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      padding: 16px 32px;
-      background: var(--navy);
-      color: var(--white);
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.25s ease, transform 0.2s ease;
-    }
-    .together-cta:hover { background: var(--navy-mid); transform: translateX(3px); }
-    .together-cta svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
-    .together-cta:hover svg { transform: translateX(3px); }
-    .together-right { padding-top: 8px; }
+    .together-email:hover { border-bottom-color: var(--cura-teal-soft); }
     .together-right p {
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--text-muted);
-      margin-bottom: 24px;
+      font: 300 16px var(--font-body);
+      line-height: 1.75;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 22px;
     }
-    .together-right p:last-child { margin-bottom: 0; }
     .together-right p.closing {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--navy);
-      font-style: italic;
+      color: rgba(255,255,255,0.92);
+      font-weight: 400;
+      margin-top: 32px;
       padding-top: 24px;
-      border-top: 1px solid #e8e8e6;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    @media (max-width: 980px) {
+      .together-grid { grid-template-columns: 1fr; gap: 56px; }
     }
 
-    /* ── FOOTER ── */
+    /* ============================================================
+       FOOTER
+       ============================================================ */
     footer {
-      background: var(--black);
-      padding: 64px 40px;
+      position: relative;
+      padding: clamp(56px, 8vw, 80px) clamp(20px, 4vw, 56px) 48px;
+      background: var(--cura-navy-deep);
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
-    .footer-inner {
-      max-width: var(--content-max);
-      margin: 0 auto;
+    .footer-grid {
+      max-width: 1200px; margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: start;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 56px;
     }
     .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
+      font: 300 28px var(--font-display);
+      letter-spacing: 0.42em;
+      color: #fff;
+      margin-bottom: 18px;
     }
-    .footer-brand-name {
-      font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--white);
-    }
-    .footer-meta {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.9;
-    }
-    .footer-meta a {
-      color: rgba(255,255,255,0.35);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .footer-meta a:hover { color: var(--teal); }
-    .footer-tagline {
-      font-size: 13px;
-      color: rgba(255,255,255,0.25);
-      max-width: 280px;
-      text-align: right;
+    .footer-brand-sub {
+      font: 300 14px var(--font-body);
+      color: rgba(255,255,255,0.55);
       line-height: 1.7;
+      max-width: 360px;
     }
+    .footer-col-title {
+      font: 500 12px var(--font-body);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 14px;
+    }
+    .footer-col a {
+      display: block;
+      padding: 6px 0;
+      font: 300 14px var(--font-body);
+      color: rgba(255,255,255,0.78);
+      transition: color .2s ease;
+    }
+    .footer-col a:hover { color: #fff; }
     .footer-bottom {
-      max-width: var(--content-max);
-      margin: 40px auto 0;
+      max-width: 1200px;
+      margin: 56px auto 0;
       padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: rgba(255,255,255,0.2);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      font: 400 12px var(--font-body);
+      color: rgba(255,255,255,0.4);
     }
 
-    /* ── RESPONSIVE: 900px ── */
-    @media (max-width: 900px) {
-      :root {
-        --section-gap-xl: 100px;
-        --section-gap-lg: 80px;
-      }
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .hero { padding: 0 24px; }
-      .hero-inner { flex-direction: column; gap: 48px; padding-top: 80px; padding-bottom: 40px; align-items: flex-start; }
-      .hero-content { max-width: 100%; }
-      .hero-visual { display: none; }
-      .hero h1 { font-size: 48px; }
-      .problem-inner,
-      .security-inner,
-      .together-inner { grid-template-columns: 1fr; gap: 48px; }
-      .problem-pullquote { position: static; }
-      .how-steps { grid-template-columns: 1fr; gap: 2px; }
-      .how-step:first-child { border-radius: 12px 12px 0 0; }
-      .how-step:last-child  { border-radius: 0 0 12px 12px; }
-      .modules-grid { grid-template-columns: 1fr 1fr; }
-      .module-card:first-child { grid-row: span 1; }
-      .security-cards { grid-template-columns: 1fr; }
-      .proof-card { padding: 36px 28px; }
-      .proof-stats { grid-template-columns: 1fr; gap: 28px; }
-      .proof-stat + .proof-stat { padding-left: 0; border-left: none; border-top: 1px solid #e8e8e6; padding-top: 28px; }
-      .footer-inner { grid-template-columns: 1fr; }
-      .footer-tagline { text-align: left; }
+    @media (max-width: 800px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .footer-grid > div:first-child { grid-column: 1 / -1; }
     }
-
-    /* ── RESPONSIVE: 480px ── */
     @media (max-width: 480px) {
-      :root { --section-gap-xl: 80px; }
-      nav { padding: 0 20px; height: 54px; }
-      .hero h1 { font-size: 38px; }
-      .hero-subhead { font-size: 16px; }
-      .modules-grid { grid-template-columns: 1fr; }
-      .how-step-number { font-size: 80px; }
-      .proof-stat-number { font-size: 56px; }
+      .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -879,274 +723,159 @@
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-logo">
-    <img src="/cadenceos-icon.svg" class="nav-icon" alt="CadenceOS">
-    <span class="nav-logo-text">CadenceOS</span>
+    <img src="/cadenceos-icon.svg" class="nav-icon" alt="CadenceOS" width="32" height="32">
+    <span>CadenceOS</span>
   </a>
   <div class="nav-links">
-    <a href="#how">How it works</a>
-    <a href="#modules">What's inside</a>
+    <a href="#pillars">Platform</a>
     <a href="#security">Security</a>
-    <a href="#contact">Work with us</a>
+    <a href="#together">Approach</a>
+    <a href="#together">Contact</a>
   </div>
-  <a href="#contact" class="nav-cta">Get in touch</a>
-  <a href="https://login.curacadence.com/login" class="nav-login">Client Login</a>
+  <div class="nav-actions">
+    <a href="https://login.curacadence.com/login" class="nav-signin">Sign in</a>
+    <a href="mailto:carlos@curacadence.com" class="nav-cta">Request demo →</a>
+  </div>
 </nav>
 
-
 <!-- HERO -->
-<section class="hero" data-bg="#0a0a0a">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <span class="eyebrow">Clinical Operating System</span>
-      <h1>
+<section class="hero">
+  <div class="aurora-root aurora-cura grain" aria-hidden="true">
+    <div class="aurora-orb aurora-orb--teal orb-tl"></div>
+    <div class="aurora-orb aurora-orb--navy orb-br"></div>
+    <div class="aurora-orb aurora-orb--teal-soft orb-c"></div>
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <div class="chip chip--dot">Now serving Rebuilt Strength + Rehab</div>
+
+      <h1 class="hero-h1">
         Your clinical system,<br>
-        finally <span class="accent">in software.</span>
+        finally in <em>software.</em>
       </h1>
-      <p class="hero-subhead">
-        CadenceOS is a custom clinical operating system built around your proprietary protocols, your care pathways, and your clinical decision logic. Isolated to your practice. Never shared with anyone else.
+
+      <p class="hero-sub">
+        CadenceOS is a custom clinical operating system shaped around your protocols, your decision logic, and your day. Isolated to your practice. Never shared.
       </p>
-      <a href="mailto:carlos@curacadence.com" class="hero-cta">
-        Tell me about your practice
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <p class="hero-response">We respond within 24 hours. No sales calls.</p>
+
+      <div class="hero-ctas">
+        <span class="glow-host">
+          <a href="mailto:carlos@curacadence.com" class="btn-primary">
+            Tell me about your practice →
+          </a>
+        </span>
+        <a href="#pillars" class="btn-ghost">See how it's built</a>
+      </div>
+
+      <div class="hero-proof">
+        <span class="chip">HIPAA-aligned infrastructure</span>
+        <span class="chip">Single-tenant data</span>
+        <span class="chip">Built around your protocols</span>
+        <span class="chip">Tablet-first clinical UI</span>
+      </div>
     </div>
 
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-card">
-        <div class="hero-card-status">
-          <span class="hero-card-status-dot"></span>
-          Live deployment · New Lenox, IL
+    <div class="hero-card-wrap">
+      <div class="glass-dark hero-card">
+        <div class="hero-card-head">
+          <span class="eyebrow" style="color: var(--cura-teal-soft);">Currently shipping</span>
+          <span class="hero-card-status">v1.6 · live</span>
         </div>
-        <div class="hero-card-modules">
-          <div class="hero-card-module">
-            <svg viewBox="0 0 14 14" fill="none">
-              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Intake &amp; Assessment
-          </div>
-          <div class="hero-card-module">
-            <svg viewBox="0 0 14 14" fill="none">
-              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Diagnosis Flow
-          </div>
-          <div class="hero-card-module">
-            <svg viewBox="0 0 14 14" fill="none">
-              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Care Plan Builder
-          </div>
-          <div class="hero-card-module">
-            <svg viewBox="0 0 14 14" fill="none">
-              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Session Logging
-          </div>
-          <div class="hero-card-module">
-            <svg viewBox="0 0 14 14" fill="none">
-              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Progress Dashboard
-          </div>
-          <div class="hero-card-module">
-            <svg viewBox="0 0 14 14" fill="none">
-              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Session Recap Email
-          </div>
-        </div>
-        <div class="hero-card-wave">
-          <svg viewBox="0 0 252 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polyline
-              points="0,18 28,18 42,18 56,4 70,32 84,4 98,32 112,18 126,18 196,18 210,10 224,26 238,18 252,18"
-              stroke="#5cb8a0"
-              stroke-width="1.5"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              opacity="0.6"/>
-          </svg>
+        <div class="hero-card-title">CadenceOS</div>
+        <p class="hero-card-body">
+          A clinical OS for the Rebuilt Strength + Rehab protocol. Tablet-first, density-respecting, never in the way.
+        </p>
+        <div class="hero-card-stats">
+          <div><span>342</span>sessions logged</div>
+          <div><span>1.2s</span>avg load</div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="hero-scroll" aria-hidden="true">
-    <span class="hero-scroll-line"></span>
-    Scroll
-  </div>
 </section>
 
-
-<!-- THE PROBLEM -->
-<section class="problem" data-bg="#ffffff">
-  <div class="problem-eyebrow reveal" style="max-width: var(--content-max); margin: 0 auto 48px;">
-    <span class="eyebrow" style="color: var(--text-muted);">The problem</span>
-  </div>
+<!-- PROBLEM -->
+<section class="problem" id="problem">
   <div class="problem-inner">
-    <div class="problem-body reveal">
-      <p>
-        Your diagnostic logic is not in any software. It never has been. It lives in your head, and maybe in a document no one else understands, and in the sequence of decisions you make between when a patient walks in and when they leave. You have built something real. It just has no permanent home.
-      </p>
-      <p>
-        The tools you use right now were not built for you. Scheduling software manages your calendar. Documentation platforms speed up your notes. Protocol libraries give you someone else's evidence base to borrow. None of them know how you classify a condition, how you sequence care, or how you make the clinical decisions that define your practice. None of them can run your system, because none of them were built to hold one.
-      </p>
+    <div class="problem-eyebrow">
+      <span class="eyebrow">The problem</span>
     </div>
-    <div class="problem-pullquote reveal">
-      <p>Your clinical methodology is not a template. <span class="italic">Right now it only runs when you're in the room. It doesn't have to.</span></p>
-    </div>
-  </div>
-</section>
-
-
-<!-- HOW IT WORKS -->
-<section class="how" id="how" data-bg="#f5f5f3">
-  <div class="how-header reveal">
-    <span class="eyebrow">How it works</span>
-    <h2>How CadenceOS works</h2>
-  </div>
-  <div class="how-steps">
-    <div class="how-step reveal">
-      <span class="how-step-number" aria-hidden="true">01</span>
-      <span class="how-step-label">Step 01</span>
-      <h3>We learn your system</h3>
-      <p>We document everything: your diagnostic logic, your care plan phases, your clinical protocols, your decision framework. If it lives in your head or a document no one else understands, we capture it.</p>
-    </div>
-    <div class="how-step reveal">
-      <span class="how-step-number" aria-hidden="true">02</span>
-      <span class="how-step-label">Step 02</span>
-      <h3>We build your instance</h3>
-      <p>A fully isolated deployment built around your protocols. Your data lives in your environment. Never co-mingled with another clinic. Never accessible to anyone else.</p>
-    </div>
-    <div class="how-step reveal">
-      <span class="how-step-number" aria-hidden="true">03</span>
-      <span class="how-step-label">Step 03</span>
-      <h3>Your practice runs on software</h3>
-      <p>Intake, assessment, care plan generation, session logging, progress tracking, patient recaps. All driven by your clinical logic, running while you're with patients.</p>
+    <div class="problem-grid">
+      <div class="problem-body">
+        <p>
+          Your diagnostic logic is not in any software. It never has been. It lives in your head, and maybe in a document no one else understands, and in the sequence of decisions you make between when a patient walks in and when they leave. You have built something real. It just has no permanent home.
+        </p>
+        <p>
+          The tools you use right now were not built for you. Scheduling software manages your calendar. Documentation platforms speed up your notes. Protocol libraries give you someone else's evidence base to borrow. None of them know how you classify a condition, how you sequence care, or how you make the clinical decisions that define your practice. None of them can run your system, because none of them were built to hold one.
+        </p>
+      </div>
+      <aside class="problem-pullquote">
+        <p>Your clinical methodology is not a template. <em>Right now it only runs when you're in the room. It doesn't have to.</em></p>
+      </aside>
     </div>
   </div>
 </section>
 
+<!-- PILLARS -->
+<section class="pillars" id="pillars">
+  <div class="pillars-inner">
+    <div class="eyebrow pillars-eyebrow">What we build</div>
+    <h2 class="pillars-h2">
+      Three things, made to fit<br>
+      your clinic exactly.
+    </h2>
 
-<!-- MODULES -->
-<section class="modules" id="modules" data-bg="#ffffff">
-  <div class="modules-header reveal">
-    <span class="eyebrow">Modules</span>
-    <h2>Everything a clinic needs. Built around your system.</h2>
-  </div>
-  <div class="modules-grid">
+    <div class="pillars-grid">
+      <div class="glass-dark pillar">
+        <div>
+          <div class="pillar-kicker">— 01</div>
+          <div class="pillar-title">Clinical operating system</div>
+          <p class="pillar-body">
+            Daily queue, charting, care plans, exercise library — shaped around your protocols, not a generic EHR template.
+          </p>
+        </div>
+        <span class="chip pillar-tag">CadenceOS</span>
+      </div>
 
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="rgba(92,184,160,0.2)"/>
-        <path d="M10 11h12M10 15h8M10 19h10" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
-      <h3>Patient Intake</h3>
-      <p>Capture presenting complaint, pain level, history, and triage status on arrival.</p>
+      <div class="glass-dark pillar">
+        <div>
+          <div class="pillar-kicker">— 02</div>
+          <div class="pillar-title">Patient-facing care plans</div>
+          <p class="pillar-body">
+            A clean, branded share page for every plan. Phase-by-phase clarity, no portal login required.
+          </p>
+        </div>
+        <span class="chip pillar-tag">Patient share</span>
+      </div>
+
+      <div class="glass-dark pillar">
+        <div>
+          <div class="pillar-kicker">— 03</div>
+          <div class="pillar-title">Practice intelligence</div>
+          <p class="pillar-body">
+            Outcomes, throughput, and protocol drift, surfaced quietly in the background. Never the loudest voice in the room.
+          </p>
+        </div>
+        <span class="chip pillar-tag">Coming Q3</span>
+      </div>
     </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <rect x="9" y="8" width="14" height="16" rx="2" stroke="#5cb8a0" stroke-width="1.6"/>
-        <path d="M13 13h6M13 16.5h4M13 20h5" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
-      <h3>Assessment Templates</h3>
-      <p>Your region-specific assessment logic, structured as guided clinical forms.</p>
-    </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <circle cx="16" cy="14" r="5" stroke="#5cb8a0" stroke-width="1.6"/>
-        <path d="M16 19v4" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round"/>
-        <path d="M13 23h6" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
-      <h3>Diagnosis Flow</h3>
-      <p>Select from your proprietary diagnosis list. Auto-generate a clinical statement.</p>
-    </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <path d="M8 11h16v4l-8 5-8-5v-4z" stroke="#5cb8a0" stroke-width="1.5" stroke-linejoin="round"/>
-        <path d="M8 15v8h16v-8" stroke="#5cb8a0" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <h3>Care Plan Builder</h3>
-      <p>Your phase-based protocols, auto-populated by diagnosis and patient profile.</p>
-    </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <path d="M5 19h4l2.5-7 3.5 10 2.5-6.5 1.5 3.5H27" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <h3>Session Logging</h3>
-      <p>Track exercises performed, device metrics, ROM, manual therapy, and clinical notes.</p>
-    </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <path d="M10 24V15l6-6 6 6v9H10z" stroke="#5cb8a0" stroke-width="1.6" stroke-linejoin="round"/>
-        <path d="M14 24v-5h4v5" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <h3>Exercise Library</h3>
-      <p>Your tagged exercise library with video links, searchable by region and phase.</p>
-    </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <rect x="7" y="9" width="18" height="13" rx="2" stroke="#5cb8a0" stroke-width="1.6"/>
-        <path d="M11 22l-2 4M21 22l2 4M9 26h14" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
-      <h3>Session Recap Email</h3>
-      <p>Auto-generated patient summary with HEP, exercises, and next session preview.</p>
-    </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <rect x="7" y="7" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
-        <rect x="17" y="7" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
-        <rect x="7" y="17" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
-        <rect x="17" y="17" width="8" height="8" rx="1.5" stroke="#5cb8a0" stroke-width="1.5"/>
-      </svg>
-      <h3>Home Dashboard</h3>
-      <p>Active patient queue, care plan progress, and session status at a glance.</p>
-    </div>
-
-    <div class="module-card reveal">
-      <svg class="module-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#EBF5F2"/>
-        <path d="M7 22l4.5-5.5 4 3 4.5-7.5 4 5.5" stroke="#5cb8a0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M7 26h18" stroke="#5cb8a0" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
-      <h3>Progress Dashboard</h3>
-      <p>Visual history per patient: pain trend, strength data, phase timeline.</p>
-    </div>
-
   </div>
 </section>
-
 
 <!-- SECURITY -->
-<section class="security" id="security" data-bg="#1a3d6b">
+<section class="security" id="security">
   <div class="security-inner">
-    <div class="reveal">
+    <div class="security-head">
       <span class="eyebrow">Security &amp; Compliance</span>
       <h2>Your data. Your instance. Full stop.</h2>
       <p class="security-body">
         Most clinic software puts every client on a shared platform. One database, hundreds of practices, and a vendor who can see all of it. CadenceOS is built differently. Every practice runs on its own isolated instance: its own database, its own authentication, its own subdomain. Deployed on AWS and built to HIPAA standards from the ground up, with a Business Associate Agreement signed before any clinic goes live. Your patient data never touches another practice's environment. Your clinical protocols are never visible to anyone else. This is not just compliance documentation. It is the architectural guarantee that your IP stays yours.
       </p>
     </div>
-    <div class="security-cards">
 
-      <div class="security-card reveal">
+    <div class="security-cards">
+      <div class="glass-dark security-card">
         <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
           <path d="M14 3l7 2.5V14c0 4.5-2.8 7.5-7 9-4.2-1.5-7-4.5-7-9V5.5L14 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
           <path d="M10 14l3 3L18 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1155,7 +884,7 @@
         <p>A Business Associate Agreement is executed with every clinic before launch. No exceptions. Every patient record access is logged and traceable.</p>
       </div>
 
-      <div class="security-card reveal">
+      <div class="glass-dark security-card">
         <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
           <rect x="4" y="12" width="20" height="13" rx="3" stroke="currentColor" stroke-width="1.6"/>
           <path d="M9 12V9a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -1165,7 +894,7 @@
         <p>Every deployment runs on Amazon Web Services. Data encrypted at rest and in transit. The same infrastructure that healthcare organizations worldwide depend on.</p>
       </div>
 
-      <div class="security-card reveal">
+      <div class="glass-dark security-card">
         <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
           <rect x="3" y="3" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/>
           <rect x="16" y="3" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/>
@@ -1176,7 +905,7 @@
         <p>Your database. Your authentication. Your subdomain. Each clinic is a completely separate deployment. No co-mingling, no shared infrastructure, no shared risk.</p>
       </div>
 
-      <div class="security-card reveal">
+      <div class="glass-dark security-card">
         <svg class="security-card-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true">
           <path d="M7 22V12l4-4h6l4 4v10H7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
           <path d="M11 17h6M11 20h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
@@ -1184,63 +913,37 @@
         <h3>Your IP, Protected</h3>
         <p>Your clinical protocols are never shared with other subscribers, never used to populate a common library. What you built is yours. Architecturally, not just contractually.</p>
       </div>
-
     </div>
   </div>
 </section>
-
-
-<!-- PROOF -->
-<section class="proof" data-bg="#f5f5f3">
-  <div class="proof-inner">
-    <span class="eyebrow reveal">Deployment</span>
-    <h2 class="reveal">Currently in the clinic</h2>
-
-    <div class="proof-card reveal">
-      <div class="proof-stats">
-        <div class="proof-stat">
-          <p class="proof-stat-number">9</p>
-          <p class="proof-stat-label">Regional protocols</p>
-        </div>
-        <div class="proof-stat">
-          <p class="proof-stat-number">229</p>
-          <p class="proof-stat-label">Tagged exercises</p>
-        </div>
-        <div class="proof-stat">
-          <p class="proof-stat-number">3</p>
-          <p class="proof-stat-label">Care phases</p>
-        </div>
-      </div>
-      <p class="proof-description">
-        CadenceOS is live at Rebuilt Strength + Rehab in New Lenox, Illinois. Powering patient intake through discharge with 9 regional assessment protocols and 229 tagged exercises across three care phases.
-      </p>
-      <div class="proof-live">
-        <span class="proof-live-dot"></span>
-        Live deployment. Active patients.
-      </div>
-    </div>
-  </div>
-</section>
-
 
 <!-- TOGETHER -->
-<section class="together" id="contact" data-bg="#ffffff">
-  <div class="together-inner">
-    <div class="together-left reveal">
-      <span class="eyebrow">Working Together</span>
-      <h2>You built your system. We build the software for it.</h2>
-      <p class="together-subhead">This is not a subscription you activate.<br>It starts with a conversation.</p>
-      <a href="mailto:carlos@curacadence.com" class="together-cta">
-        Tell me about your practice
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <p class="together-response">We respond within 24 hours. No sales calls.</p>
+<section class="together" id="together">
+  <div class="aurora-root aurora-cura grain" aria-hidden="true" style="--aurora-grain-opacity: 0.10;">
+    <div class="aurora-orb aurora-orb--teal-soft orb-bl"></div>
+    <div class="aurora-orb aurora-orb--navy orb-tr"></div>
+  </div>
+
+  <div class="together-grid">
+    <div class="together-left">
+      <span class="eyebrow">Working together</span>
+      <h2>You built your system.<br>We build the software for it.</h2>
+      <p class="together-sub">
+        This is not a subscription you activate.<br>It starts with a conversation.
+      </p>
+      <div class="together-cta">
+        <span class="glow-host">
+          <a href="mailto:carlos@curacadence.com" class="btn-primary">
+            Tell me about your practice →
+          </a>
+        </span>
+      </div>
+      <p class="together-meta">We respond within 24 hours. No sales calls.</p>
       <p class="together-pricing">Custom build · Monthly retainer. Scoped per practice.</p>
       <a href="mailto:carlos@curacadence.com" class="together-email">carlos@curacadence.com</a>
     </div>
-    <div class="together-right reveal">
+
+    <div class="together-right">
       <p>
         Every practitioner who has spent years developing a clinical methodology reaches the same dead end. The tools that exist were designed for someone else. You adapt, you work around, you keep your actual logic somewhere the software can't touch. That is the problem CadenceOS was built to solve.
       </p>
@@ -1260,28 +963,41 @@
   </div>
 </section>
 
-
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
+  <div class="footer-grid">
     <div>
-      <div class="footer-brand">
-        <img src="/cadenceos-icon.svg" alt="CadenceOS" width="24" height="24" style="border-radius:5px;">
-        <span class="footer-brand-name">CadenceOS</span>
-      </div>
-      <div class="footer-meta">
-        Operated by CURA LLC. McLean, Virginia<br>
-        <a href="mailto:carlos@curacadence.com">carlos@curacadence.com</a><br>
-        <a href="/privacy">Privacy Policy</a>&nbsp;&nbsp;·&nbsp;&nbsp;BAA available on request
-      </div>
+      <div class="footer-brand">CURA</div>
+      <p class="footer-brand-sub">
+        CURA LLC builds custom clinical operating systems, one practice at a time.
+      </p>
     </div>
-    <p class="footer-tagline">
-      Each clinic deployment is isolated, HIPAA-compliant, and built to your specifications.
-    </p>
+
+    <div class="footer-col">
+      <div class="footer-col-title">Platform</div>
+      <a href="#pillars">CadenceOS</a>
+      <a href="#pillars">Care plans</a>
+      <a href="#pillars">Practice intel</a>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <a href="#together">About</a>
+      <a href="#together">Approach</a>
+      <a href="mailto:carlos@curacadence.com">Contact</a>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col-title">Legal</div>
+      <a href="/privacy">Privacy</a>
+      <a href="mailto:carlos@curacadence.com">Security</a>
+      <a href="mailto:carlos@curacadence.com">BAA</a>
+    </div>
   </div>
+
   <div class="footer-bottom">
-    <span>&copy; 2026 CURA LLC</span>
-    <span>All rights reserved</span>
+    <span>© 2026 CURA LLC · McLean, Virginia</span>
+    <span>curacadence.com</span>
   </div>
 </footer>
 
